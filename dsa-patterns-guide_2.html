@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Pattern Blueprints — SDE 2 / SDE 3 Interview Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#142852;          /* blueprint page */
+  --paper-deep:#0D1B3D;     /* code panels   */
+  --panel:#1A3162;          /* cards         */
+  --line:rgba(157,180,229,.26);
+  --grid:rgba(157,180,229,.10);
+  --ink:#E8EEFB;
+  --muted:#9DB4E5;
+  --amber:#FFC53D;          /* trigger words  */
+  --teal:#4FD6BE;           /* pointer L / ok */
+  --coral:#FF8A7A;          /* pointer R      */
+  --violet:#B7A6FF;
+  --radius:10px;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --disp:'Archivo',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  font-family:var(--body);color:var(--ink);background:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:32px 32px;
+  line-height:1.62;font-size:15.5px;
+}
+a{color:var(--teal)}
+::selection{background:var(--amber);color:#102046}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:236px 1fr;gap:40px}
+main{min-width:0;padding-bottom:96px}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:28px 0 28px;border-right:1px solid var(--line)}
+nav.toc h2{font:600 11px var(--mono);letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+nav.toc a{display:flex;gap:10px;align-items:baseline;color:var(--muted);text-decoration:none;font:500 13px var(--body);padding:6px 10px 6px 0;border-left:2px solid transparent;padding-left:12px}
+nav.toc a:hover{color:var(--ink)}
+nav.toc a.on{color:var(--amber);border-left-color:var(--amber)}
+nav.toc a .no{font:600 11px var(--mono);color:var(--line);min-width:22px}
+nav.toc a.on .no{color:var(--amber)}
+@media(max-width:920px){.wrap{grid-template-columns:1fr}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:20px 0}}
+
+/* ---------- hero ---------- */
+header.hero{padding:64px 0 36px;border-bottom:1px solid var(--line)}
+.stamp{display:inline-block;font:600 11px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber);padding:5px 12px;border-radius:3px;margin-bottom:20px}
+header.hero h1{font-family:var(--disp);font-weight:850;font-stretch:118%;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.01em;text-transform:uppercase}
+header.hero h1 em{font-style:normal;color:var(--amber)}
+header.hero p.sub{max-width:62ch;color:var(--muted);margin-top:18px;font-size:16px}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:22px;font:500 12px var(--mono);color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:7px}
+.dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* ---------- pattern section ---------- */
+section.pat{padding:56px 0 8px;border-bottom:1px dashed var(--line)}
+.titleblock{display:grid;grid-template-columns:auto 1fr auto;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel);margin-bottom:26px}
+.titleblock .num{display:flex;align-items:center;justify-content:center;font:800 26px var(--disp);font-stretch:118%;color:var(--amber);padding:18px 22px;border-right:1px solid var(--line);min-width:84px}
+.titleblock .name{padding:14px 22px}
+.titleblock .name h2{font-family:var(--disp);font-weight:800;font-stretch:114%;font-size:clamp(20px,2.6vw,28px);text-transform:uppercase;letter-spacing:.01em}
+.titleblock .name p{color:var(--muted);font-size:13.5px;margin-top:2px}
+.titleblock .meta{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:14px 22px;border-left:1px solid var(--line);font:500 11px var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+.titleblock .meta b{color:var(--teal);font-weight:600}
+@media(max-width:680px){.titleblock{grid-template-columns:auto 1fr}.titleblock .meta{display:none}}
+
+h3.sec{font:600 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:30px 0 14px;display:flex;align-items:center;gap:12px}
+h3.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* trigger keywords */
+.triggers{display:flex;flex-wrap:wrap;gap:10px}
+.kw{font:500 13px var(--mono);background:rgba(255,197,61,.12);color:var(--amber);border:1px solid rgba(255,197,61,.45);padding:5px 12px;border-radius:4px}
+.kw b{font-weight:600;background:var(--amber);color:#102046;border-radius:2px;padding:0 4px}
+.antikw{font:500 13px var(--mono);color:var(--muted);border:1px dashed var(--line);padding:5px 12px;border-radius:4px}
+
+/* visual frame */
+.viz{border:1px solid var(--line);border-radius:var(--radius);background:rgba(13,27,61,.5);padding:18px 14px 8px;overflow-x:auto}
+.viz svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.viz .cap{font:400 12.5px var(--mono);color:var(--muted);text-align:center;padding:10px 8px 8px;border-top:1px dashed var(--line);margin-top:12px}
+
+/* code */
+pre{background:var(--paper-deep);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;overflow-x:auto;font:400 13px/1.7 var(--mono);color:#D7E3FA}
+pre .c{color:#7E94C4;font-style:italic}     /* comment  */
+pre .k{color:var(--coral)}                  /* keyword  */
+pre .f{color:var(--teal)}                   /* function */
+pre .s{color:var(--amber)}                  /* string   */
+pre .n{color:var(--violet)}                 /* number   */
+
+/* leetcode table */
+table.lc{width:100%;border-collapse:collapse;font-size:13.5px}
+table.lc th{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
+table.lc td{padding:9px 12px;border-bottom:1px solid rgba(157,180,229,.12)}
+table.lc tr:last-child td{border-bottom:0}
+table.lc a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--muted)}
+table.lc a:hover{color:var(--amber);border-bottom-color:var(--amber)}
+.diff{font:600 11px var(--mono);padding:2px 8px;border-radius:3px}
+.de{color:#7BE3A8;background:rgba(123,227,168,.12)}
+.dm{color:var(--amber);background:rgba(255,197,61,.12)}
+.dh{color:var(--coral);background:rgba(255,138,122,.12)}
+
+.note{border-left:3px solid var(--violet);background:rgba(183,166,255,.07);padding:12px 16px;border-radius:0 8px 8px 0;color:var(--muted);font-size:14px;margin-top:14px}
+.note b{color:var(--violet)}
+
+/* cheat sheet */
+table.cheat{width:100%;border-collapse:collapse;font-size:13px}
+table.cheat th{font:600 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+table.cheat td{padding:8px 10px;border-bottom:1px solid rgba(157,180,229,.12);vertical-align:top}
+table.cheat td:first-child{font:600 12.5px var(--mono);color:var(--teal);white-space:nowrap}
+table.cheat td:last-child{font:500 12px var(--mono);color:var(--muted);white-space:nowrap}
+
+footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="toc" aria-label="Pattern index">
+  <h2>Pattern Index</h2>
+  <a href="#map"><span class="no">◇</span>Decision Map</a>
+  <a href="#p1"><span class="no">01</span>Sliding Window</a>
+  <a href="#p2"><span class="no">02</span>Two Pointers</a>
+  <a href="#p3"><span class="no">03</span>Fast &amp; Slow Pointers</a>
+  <a href="#p4"><span class="no">04</span>Merge Intervals</a>
+  <a href="#p5"><span class="no">05</span>Binary Search</a>
+  <a href="#p6"><span class="no">06</span>Monotonic Stack</a>
+  <a href="#p7"><span class="no">07</span>Heap / Top-K</a>
+  <a href="#p8"><span class="no">08</span>BFS</a>
+  <a href="#p9"><span class="no">09</span>DFS &amp; Backtracking</a>
+  <a href="#p10"><span class="no">10</span>Dynamic Programming</a>
+  <a href="#p11"><span class="no">11</span>Topological Sort</a>
+  <a href="#p12"><span class="no">12</span>Union-Find</a>
+  <a href="#cheat"><span class="no">◆</span>Cheat Sheet</a>
+</nav>
+
+<main>
+
+<header class="hero">
+  <span class="stamp">Field Guide · Rev 2026</span>
+  <h1>DSA Pattern <em>Blueprints</em></h1>
+  <p class="sub">Twelve patterns that cover ~90% of SDE&nbsp;2 / SDE&nbsp;3 coding rounds. Each blueprint gives you the <strong style="color:var(--amber)">trigger words</strong> to recognize it in a problem statement, a visual model to reason with on the whiteboard, a commented reference implementation, and the highest-signal LeetCode problems to drill.</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--amber)"></i>trigger keyword</span>
+    <span><i class="dot" style="background:var(--teal)"></i>pointer / accepted</span>
+    <span><i class="dot" style="background:var(--coral)"></i>pointer / rejected</span>
+    <span><i class="dot" style="background:var(--violet)"></i>state being built</span>
+  </div>
+</header>
+
+<!-- ════════════════ DECISION MAP ════════════════ -->
+<section class="pat" id="map">
+  <div class="titleblock">
+    <div class="num">◇</div>
+    <div class="name"><h2>Keyword → Pattern Decision Map</h2><p>Read the problem statement, match the signal, route to the blueprint.</p></div>
+    <div class="meta"><span>Recognition time</span><b>&lt; 60 seconds</b></div>
+  </div>
+  <div class="viz">
+  <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <text x="20" y="28" fill="#9DB4E5" font-size="11" letter-spacing="2">SIGNAL IN PROBLEM STATEMENT</text>
+    <text x="660" y="28" fill="#9DB4E5" font-size="11" letter-spacing="2">PATTERN</text>
+    <g>
+      <!-- row template: signal box, connector, pattern chip -->
+      <!-- 1 -->
+      <rect x="20" y="44" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="65" fill="#FFC53D">"contiguous subarray" · "substring" · "window of size k"</text>
+      <line x1="560" y1="60" x2="650" y2="60" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="44" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="65" fill="#4FD6BE">01 SLIDING WINDOW</text>
+      <!-- 2 -->
+      <rect x="20" y="89" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="110" fill="#FFC53D">"sorted array" · "pair that sums to" · "in-place"</text>
+      <line x1="560" y1="105" x2="650" y2="105" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="89" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="110" fill="#4FD6BE">02 TWO POINTERS</text>
+      <!-- 3 -->
+      <rect x="20" y="134" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="155" fill="#FFC53D">"linked list" + "cycle" / "middle" · sequence that loops</text>
+      <line x1="560" y1="150" x2="650" y2="150" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="134" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="155" fill="#4FD6BE">03 FAST &amp; SLOW</text>
+      <!-- 4 -->
+      <rect x="20" y="179" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="200" fill="#FFC53D">"intervals" · "overlapping" · "meeting rooms" · "schedule"</text>
+      <line x1="560" y1="195" x2="650" y2="195" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="179" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="200" fill="#4FD6BE">04 MERGE INTERVALS</text>
+      <!-- 5 -->
+      <rect x="20" y="224" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="245" fill="#FFC53D">"sorted" · "O(log n)" · "minimum speed/capacity such that…"</text>
+      <line x1="560" y1="240" x2="650" y2="240" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="224" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="245" fill="#4FD6BE">05 BINARY SEARCH</text>
+      <!-- 6 -->
+      <rect x="20" y="269" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="290" fill="#FFC53D">"next greater element" · "previous smaller" · "span"</text>
+      <line x1="560" y1="285" x2="650" y2="285" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="269" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="290" fill="#4FD6BE">06 MONOTONIC STACK</text>
+      <!-- 7 -->
+      <rect x="20" y="314" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="335" fill="#FFC53D">"top k" · "kth largest" · "k most frequent" · "median of stream"</text>
+      <line x1="560" y1="330" x2="650" y2="330" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="314" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="335" fill="#4FD6BE">07 HEAP / TOP-K</text>
+      <!-- 8 -->
+      <rect x="20" y="359" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="380" fill="#FFC53D">"shortest path" (unweighted) · "minimum steps" · "level order"</text>
+      <line x1="560" y1="375" x2="650" y2="375" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="359" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="380" fill="#4FD6BE">08 BFS</text>
+      <!-- 9 -->
+      <rect x="20" y="404" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="425" fill="#FFC53D">"generate all…" · "permutations/subsets" · "islands/regions"</text>
+      <line x1="560" y1="420" x2="650" y2="420" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="404" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="425" fill="#4FD6BE">09 DFS / BACKTRACK</text>
+      <!-- 10 -->
+      <rect x="20" y="449" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="470" fill="#FFC53D">"count the ways" · "max/min result of choices" · "can you reach"</text>
+      <line x1="560" y1="465" x2="650" y2="465" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="449" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="470" fill="#4FD6BE">10 DYNAMIC PROG.</text>
+      <!-- 11 -->
+      <rect x="20" y="494" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="515" fill="#FFC53D">"prerequisites" · "dependency / build order" · "course schedule"</text>
+      <line x1="560" y1="510" x2="650" y2="510" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="494" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="515" fill="#4FD6BE">11 TOPOLOGICAL SORT</text>
+      <!-- 12 -->
+      <rect x="20" y="539" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="560" fill="#FFC53D">"groups that merge over time" · "are A and B connected?"</text>
+      <line x1="560" y1="555" x2="650" y2="555" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="539" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="560" fill="#4FD6BE">12 UNION-FIND</text>
+    </g>
+  </svg>
+  <div class="cap">When two signals fire at once (e.g. "shortest" + "weighted"), the constraint section usually breaks the tie — check n and the time limit.</div>
+  </div>
+</section>
+
+<!-- ════════════════ 01 SLIDING WINDOW ════════════════ -->
+<section class="pat" id="p1">
+  <div class="titleblock">
+    <div class="num">01</div>
+    <div class="name"><h2>Sliding Window</h2><p>Maintain a moving range over an array/string instead of re-scanning every subarray.</p></div>
+    <div class="meta"><span>Time <b>O(n)</b> · Space <b>O(k)</b></span><span>replaces brute force <b>O(n²)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>contiguous</b> subarray / substring</span>
+    <span class="kw"><b>longest / shortest</b> … that satisfies X</span>
+    <span class="kw">window of <b>size k</b></span>
+    <span class="kw">at most / exactly <b>K distinct</b></span>
+    <span class="kw">max sum of <b>k consecutive</b></span>
+    <span class="antikw">✗ not for: non-contiguous subsequences → DP</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="14">
+    <!-- array cells -->
+    <g text-anchor="middle">
+      <rect x="40"  y="60" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="100" y="60" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="160" y="60" width="60" height="46" fill="rgba(79,214,190,.16)" stroke="#4FD6BE" stroke-width="2"/>
+      <rect x="220" y="60" width="60" height="46" fill="rgba(79,214,190,.16)" stroke="#4FD6BE" stroke-width="2"/>
+      <rect x="280" y="60" width="60" height="46" fill="rgba(79,214,190,.16)" stroke="#4FD6BE" stroke-width="2"/>
+      <rect x="340" y="60" width="60" height="46" fill="rgba(79,214,190,.16)" stroke="#4FD6BE" stroke-width="2"/>
+      <rect x="400" y="60" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="460" y="60" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="520" y="60" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <text x="70"  y="89" fill="#E8EEFB">a</text><text x="130" y="89" fill="#E8EEFB">b</text>
+      <text x="190" y="89" fill="#4FD6BE">c</text><text x="250" y="89" fill="#4FD6BE">a</text>
+      <text x="310" y="89" fill="#4FD6BE">d</text><text x="370" y="89" fill="#4FD6BE">e</text>
+      <text x="430" y="89" fill="#E8EEFB">a</text><text x="490" y="89" fill="#E8EEFB">d</text>
+      <text x="550" y="89" fill="#E8EEFB">f</text>
+    </g>
+    <!-- pointers -->
+    <text x="190" y="138" fill="#4FD6BE" text-anchor="middle">▲ left</text>
+    <text x="370" y="138" fill="#FF8A7A" text-anchor="middle">▲ right</text>
+    <!-- arrows -->
+    <path d="M 380 40 H 440" stroke="#FF8A7A" stroke-width="2" fill="none" marker-end="url(#aw1)"/>
+    <text x="448" y="44" fill="#FF8A7A" font-size="12">grow: add nums[right]</text>
+    <path d="M 180 40 H 126" stroke="#FFC53D" stroke-width="2" fill="none" marker-end="url(#aw2)"/>
+    <text x="40" y="24" fill="#FFC53D" font-size="12">shrink while invalid: remove nums[left]</text>
+    <text x="40" y="175" fill="#9DB4E5" font-size="12">invariant: the window [left..right] is ALWAYS valid after each step</text>
+    <defs>
+      <marker id="aw1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8A7A"/></marker>
+      <marker id="aw2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FFC53D"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">right expands greedily · left chases only when the window breaks a rule — each index enters and leaves once → O(n)</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — variable-size window</h3>
+  <pre><span class="k">def</span> <span class="f">length_of_longest_substring</span>(s: str) -&gt; int:
+    <span class="c"># LC 3: longest substring without repeating characters</span>
+    last_seen = {}                      <span class="c"># char -&gt; most recent index</span>
+    left = best = <span class="n">0</span>
+
+    <span class="k">for</span> right, ch <span class="k">in</span> enumerate(s):    <span class="c"># 1) GROW: right moves every loop</span>
+        <span class="k">if</span> ch <span class="k">in</span> last_seen <span class="k">and</span> last_seen[ch] &gt;= left:
+            left = last_seen[ch] + <span class="n">1</span>  <span class="c"># 2) SHRINK: jump left past the duplicate</span>
+        last_seen[ch] = right           <span class="c"># 3) UPDATE window state</span>
+        best = max(best, right - left + <span class="n">1</span>)  <span class="c"># 4) RECORD answer while valid</span>
+    <span class="k">return</span> best
+
+
+<span class="k">def</span> <span class="f">max_sum_fixed_k</span>(nums, k: int) -&gt; int:
+    <span class="c"># Fixed-size variant: slide, don't recompute the sum</span>
+    window = sum(nums[:k])
+    best = window
+    <span class="k">for</span> i <span class="k">in</span> range(k, len(nums)):
+        window += nums[i] - nums[i - k] <span class="c"># add entering, drop leaving element</span>
+        best = max(best, window)
+    <span class="k">return</span> best</pre>
+  <div class="note"><b>Senior-level tell:</b> "exactly K" problems are usually solved as <code>atMost(K) − atMost(K−1)</code> — interviewers at SDE 3 loops love this reduction (LC 992, 1248).</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>3</td><td><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">Longest Substring Without Repeating Characters</a></td><td><span class="diff dm">Medium</span></td><td>The canonical variable window</td></tr>
+    <tr><td>424</td><td><a href="https://leetcode.com/problems/longest-repeating-character-replacement/">Longest Repeating Character Replacement</a></td><td><span class="diff dm">Medium</span></td><td>Window validity via a budget (k replacements)</td></tr>
+    <tr><td>209</td><td><a href="https://leetcode.com/problems/minimum-size-subarray-sum/">Minimum Size Subarray Sum</a></td><td><span class="diff dm">Medium</span></td><td>Shortest-window flavor (shrink while valid)</td></tr>
+    <tr><td>567</td><td><a href="https://leetcode.com/problems/permutation-in-string/">Permutation in String</a></td><td><span class="diff dm">Medium</span></td><td>Fixed window + frequency map matching</td></tr>
+    <tr><td>76</td><td><a href="https://leetcode.com/problems/minimum-window-substring/">Minimum Window Substring</a></td><td><span class="diff dh">Hard</span></td><td>The SDE 2/3 classic — need/have counters</td></tr>
+    <tr><td>239</td><td><a href="https://leetcode.com/problems/sliding-window-maximum/">Sliding Window Maximum</a></td><td><span class="diff dh">Hard</span></td><td>Window + monotonic deque combo</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 02 TWO POINTERS ════════════════ -->
+<section class="pat" id="p2">
+  <div class="titleblock">
+    <div class="num">02</div>
+    <div class="name"><h2>Two Pointers</h2><p>Two indices moving toward each other (or in tandem) eliminate the nested loop.</p></div>
+    <div class="meta"><span>Time <b>O(n)</b> · Space <b>O(1)</b></span><span>replaces brute force <b>O(n²)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>sorted</b> array + find pair/triplet</span>
+    <span class="kw">pair that <b>sums to target</b></span>
+    <span class="kw">remove duplicates <b>in-place</b></span>
+    <span class="kw">is it a <b>palindrome</b></span>
+    <span class="kw"><b>container</b> / trapping water</span>
+    <span class="kw">squash / partition an array <b>O(1) space</b></span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 215" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="14">
+    <g text-anchor="middle">
+      <rect x="40"  y="70" width="60" height="46" fill="rgba(79,214,190,.16)" stroke="#4FD6BE" stroke-width="2"/>
+      <rect x="100" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="160" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="220" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="280" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="340" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="400" y="70" width="60" height="46" fill="none" stroke="rgba(157,180,229,.4)"/>
+      <rect x="460" y="70" width="60" height="46" fill="rgba(255,138,122,.16)" stroke="#FF8A7A" stroke-width="2"/>
+      <text x="70"  y="99" fill="#4FD6BE">2</text><text x="130" y="99" fill="#E8EEFB">3</text>
+      <text x="190" y="99" fill="#E8EEFB">5</text><text x="250" y="99" fill="#E8EEFB">8</text>
+      <text x="310" y="99" fill="#E8EEFB">9</text><text x="370" y="99" fill="#E8EEFB">12</text>
+      <text x="430" y="99" fill="#E8EEFB">14</text><text x="490" y="99" fill="#FF8A7A">17</text>
+    </g>
+    <text x="70" y="148" fill="#4FD6BE" text-anchor="middle">▲ L</text>
+    <text x="490" y="148" fill="#FF8A7A" text-anchor="middle">▲ R</text>
+    <path d="M 95 160 H 200" stroke="#4FD6BE" stroke-width="2" marker-end="url(#tp1)"/>
+    <text x="60" y="182" fill="#4FD6BE" font-size="12">sum &lt; target → L++ (need bigger)</text>
+    <path d="M 465 160 H 360" stroke="#FF8A7A" stroke-width="2" marker-end="url(#tp2)"/>
+    <text x="500" y="202" fill="#FF8A7A" font-size="12" text-anchor="end">sum &gt; target → R-- (need smaller)</text>
+    <text x="40" y="44" fill="#9DB4E5" font-size="12">sorted order = every move provably discards candidates, never the answer</text>
+    <defs>
+      <marker id="tp1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4FD6BE"/></marker>
+      <marker id="tp2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8A7A"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">converging pointers: L and R close in from both ends · n−1 total moves max</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — pair sum &amp; 3-Sum skeleton</h3>
+  <pre><span class="k">def</span> <span class="f">two_sum_sorted</span>(nums, target):
+    <span class="c"># LC 167: array is sorted — that's the green light</span>
+    l, r = <span class="n">0</span>, len(nums) - <span class="n">1</span>
+    <span class="k">while</span> l &lt; r:
+        s = nums[l] + nums[r]
+        <span class="k">if</span> s == target:
+            <span class="k">return</span> [l, r]
+        <span class="k">elif</span> s &lt; target:
+            l += <span class="n">1</span>          <span class="c"># too small → only a bigger left value can help</span>
+        <span class="k">else</span>:
+            r -= <span class="n">1</span>          <span class="c"># too big → only a smaller right value can help</span>
+
+
+<span class="k">def</span> <span class="f">three_sum</span>(nums):
+    <span class="c"># LC 15: sort first, fix one element, two-pointer the rest</span>
+    nums.sort()
+    res = []
+    <span class="k">for</span> i <span class="k">in</span> range(len(nums) - <span class="n">2</span>):
+        <span class="k">if</span> i &gt; <span class="n">0</span> <span class="k">and</span> nums[i] == nums[i-<span class="n">1</span>]:
+            <span class="k">continue</span>                       <span class="c"># skip duplicate anchors</span>
+        l, r = i + <span class="n">1</span>, len(nums) - <span class="n">1</span>
+        <span class="k">while</span> l &lt; r:
+            s = nums[i] + nums[l] + nums[r]
+            <span class="k">if</span> s &lt; <span class="n">0</span>:   l += <span class="n">1</span>
+            <span class="k">elif</span> s &gt; <span class="n">0</span>: r -= <span class="n">1</span>
+            <span class="k">else</span>:
+                res.append([nums[i], nums[l], nums[r]])
+                l += <span class="n">1</span>
+                <span class="k">while</span> l &lt; r <span class="k">and</span> nums[l] == nums[l-<span class="n">1</span>]:
+                    l += <span class="n">1</span>                 <span class="c"># skip duplicate pairs</span>
+    <span class="k">return</span> res</pre>
+  <div class="note"><b>Distinguish from sliding window:</b> two pointers <em>discard</em> the region between/outside them; a window <em>is</em> the answer region. If the question says "contiguous," think window; if it says "pair/triplet in sorted data," think two pointers.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>125</td><td><a href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome</a></td><td><span class="diff de">Easy</span></td><td>Converging pointers, base form</td></tr>
+    <tr><td>167</td><td><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">Two Sum II — Sorted</a></td><td><span class="diff dm">Medium</span></td><td>The discard argument in pure form</td></tr>
+    <tr><td>15</td><td><a href="https://leetcode.com/problems/3sum/">3Sum</a></td><td><span class="diff dm">Medium</span></td><td>Anchor + pointers, dedupe handling</td></tr>
+    <tr><td>11</td><td><a href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></td><td><span class="diff dm">Medium</span></td><td>Move the limiting side — greedy proof</td></tr>
+    <tr><td>283</td><td><a href="https://leetcode.com/problems/move-zeroes/">Move Zeroes</a></td><td><span class="diff de">Easy</span></td><td>Same-direction reader/writer pointers</td></tr>
+    <tr><td>42</td><td><a href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></td><td><span class="diff dh">Hard</span></td><td>Frequent SDE 3 screen — track maxes from both ends</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 03 FAST & SLOW ════════════════ -->
+<section class="pat" id="p3">
+  <div class="titleblock">
+    <div class="num">03</div>
+    <div class="name"><h2>Fast &amp; Slow Pointers</h2><p>Floyd's cycle detection — two runners at different speeds on a linked structure.</p></div>
+    <div class="meta"><span>Time <b>O(n)</b> · Space <b>O(1)</b></span><span>beats hash-set <b>O(n) space</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw">linked list + <b>cycle</b></span>
+    <span class="kw">find the <b>middle</b> of a list</span>
+    <span class="kw"><b>happy number</b> / repeating sequence</span>
+    <span class="kw">find the <b>duplicate</b> without modifying (LC 287)</span>
+    <span class="kw">does the sequence <b>terminate or loop</b>?</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <!-- tail nodes -->
+    <g text-anchor="middle">
+      <circle cx="70"  cy="110" r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <circle cx="150" cy="110" r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <circle cx="230" cy="110" r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <text x="70" y="115" fill="#E8EEFB">1</text><text x="150" y="115" fill="#E8EEFB">2</text><text x="230" y="115" fill="#E8EEFB">3</text>
+      <line x1="90" y1="110" x2="128" y2="110" stroke="#9DB4E5" marker-end="url(#fs0)"/>
+      <line x1="170" y1="110" x2="208" y2="110" stroke="#9DB4E5" marker-end="url(#fs0)"/>
+      <line x1="250" y1="110" x2="288" y2="110" stroke="#9DB4E5" marker-end="url(#fs0)"/>
+      <!-- cycle nodes -->
+      <circle cx="310" cy="110" r="20" fill="rgba(255,197,61,.12)" stroke="#FFC53D"/>
+      <circle cx="400" cy="58"  r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <circle cx="490" cy="110" r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <circle cx="400" cy="162" r="20" fill="none" stroke="rgba(157,180,229,.5)"/>
+      <text x="310" y="115" fill="#FFC53D">4</text><text x="400" y="63" fill="#E8EEFB">5</text>
+      <text x="490" y="115" fill="#E8EEFB">6</text><text x="400" y="167" fill="#E8EEFB">7</text>
+      <path d="M 326 97 L 382 67" stroke="#9DB4E5" fill="none" marker-end="url(#fs0)"/>
+      <path d="M 418 67 L 474 97"  stroke="#9DB4E5" fill="none" marker-end="url(#fs0)"/>
+      <path d="M 474 123 L 418 153" stroke="#9DB4E5" fill="none" marker-end="url(#fs0)"/>
+      <path d="M 382 153 L 326 123" stroke="#9DB4E5" fill="none" marker-end="url(#fs0)"/>
+    </g>
+    <!-- runners -->
+    <text x="150" y="70" fill="#4FD6BE" text-anchor="middle">🐢 slow ×1</text>
+    <path d="M 150 78 L 150 86" stroke="#4FD6BE" marker-end="url(#fs1)"/>
+    <text x="490" y="62" fill="#FF8A7A" text-anchor="middle">🐇 fast ×2</text>
+    <path d="M 490 70 L 490 86" stroke="#FF8A7A" marker-end="url(#fs2)"/>
+    <text x="560" y="115" fill="#9DB4E5" font-size="12">if a loop exists,</text>
+    <text x="560" y="133" fill="#9DB4E5" font-size="12">fast laps slow →</text>
+    <text x="560" y="151" fill="#4FD6BE" font-size="12">they MUST meet</text>
+    <text x="40" y="30" fill="#FFC53D" font-size="12">phase 2: reset one pointer to head; step both ×1 → they meet at cycle ENTRY (node 4)</text>
+    <defs>
+      <marker id="fs0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9DB4E5"/></marker>
+      <marker id="fs1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4FD6BE"/></marker>
+      <marker id="fs2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8A7A"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">no cycle → fast hits null first · cycle → relative speed 1 guarantees a meeting inside the loop</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — detect cycle &amp; find its entry</h3>
+  <pre><span class="k">def</span> <span class="f">detect_cycle_start</span>(head):
+    <span class="c"># LC 142: return the node where the cycle begins (or None)</span>
+    slow = fast = head
+
+    <span class="c"># Phase 1 — do they meet?</span>
+    <span class="k">while</span> fast <span class="k">and</span> fast.next:
+        slow = slow.next            <span class="c"># 1 step</span>
+        fast = fast.next.next       <span class="c"># 2 steps</span>
+        <span class="k">if</span> slow <span class="k">is</span> fast:
+            <span class="k">break</span>                   <span class="c"># collision ⇒ cycle exists</span>
+    <span class="k">else</span>:
+        <span class="k">return</span> <span class="k">None</span>                 <span class="c"># fast fell off the end ⇒ no cycle</span>
+
+    <span class="c"># Phase 2 — math: dist(head→entry) == dist(meeting→entry)</span>
+    slow = head
+    <span class="k">while</span> slow <span class="k">is not</span> fast:
+        slow = slow.next
+        fast = fast.next            <span class="c"># both ×1 now</span>
+    <span class="k">return</span> slow                     <span class="c"># cycle entry node</span>
+
+
+<span class="k">def</span> <span class="f">middle_node</span>(head):
+    <span class="c"># LC 876: when fast finishes, slow is at the middle</span>
+    slow = fast = head
+    <span class="k">while</span> fast <span class="k">and</span> fast.next:
+        slow, fast = slow.next, fast.next.next
+    <span class="k">return</span> slow</pre>
+  <div class="note"><b>Senior-level tell:</b> LC 287 (Find the Duplicate) treats the <em>array as a linked list</em> (index → value = pointer). Spotting that reduction is exactly what separates an SDE 2 answer from an SDE 3 answer.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>141</td><td><a href="https://leetcode.com/problems/linked-list-cycle/">Linked List Cycle</a></td><td><span class="diff de">Easy</span></td><td>Phase-1 base case</td></tr>
+    <tr><td>876</td><td><a href="https://leetcode.com/problems/middle-of-the-linked-list/">Middle of the Linked List</a></td><td><span class="diff de">Easy</span></td><td>Half-speed trick, used inside harder problems</td></tr>
+    <tr><td>142</td><td><a href="https://leetcode.com/problems/linked-list-cycle-ii/">Linked List Cycle II</a></td><td><span class="diff dm">Medium</span></td><td>Phase-2 math — be ready to prove it</td></tr>
+    <tr><td>202</td><td><a href="https://leetcode.com/problems/happy-number/">Happy Number</a></td><td><span class="diff de">Easy</span></td><td>Cycle detection on an implicit sequence</td></tr>
+    <tr><td>287</td><td><a href="https://leetcode.com/problems/find-the-duplicate-number/">Find the Duplicate Number</a></td><td><span class="diff dm">Medium</span></td><td>Array-as-linked-list reduction</td></tr>
+    <tr><td>143</td><td><a href="https://leetcode.com/problems/reorder-list/">Reorder List</a></td><td><span class="diff dm">Medium</span></td><td>Middle + reverse + merge, multi-step composition</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 04 MERGE INTERVALS ════════════════ -->
+<section class="pat" id="p4">
+  <div class="titleblock">
+    <div class="num">04</div>
+    <div class="name"><h2>Merge Intervals</h2><p>Sort by start, then sweep once — overlap logic collapses to one comparison.</p></div>
+    <div class="meta"><span>Time <b>O(n log n)</b> · Space <b>O(n)</b></span><span>sort dominates</span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>intervals</b> [start, end]</span>
+    <span class="kw"><b>overlapping</b> / conflicting</span>
+    <span class="kw"><b>meeting rooms</b> / calendar / booking</span>
+    <span class="kw">insert / remove an <b>interval</b></span>
+    <span class="kw">minimum rooms / <b>maximum concurrent</b></span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="12">
+    <text x="40" y="28" fill="#9DB4E5">input (sorted by start)</text>
+    <rect x="60"  y="42" width="180" height="20" rx="4" fill="rgba(79,214,190,.2)" stroke="#4FD6BE"/><text x="68" y="57" fill="#4FD6BE">[1,4]</text>
+    <rect x="180" y="70" width="130" height="20" rx="4" fill="rgba(79,214,190,.2)" stroke="#4FD6BE"/><text x="188" y="85" fill="#4FD6BE">[3,7]</text>
+    <text x="324" y="85" fill="#4FD6BE">← start ≤ prev.end → MERGE</text>
+    <rect x="430" y="42" width="120" height="20" rx="4" fill="rgba(255,138,122,.2)" stroke="#FF8A7A"/><text x="438" y="57" fill="#FF8A7A">[10,12]</text>
+    <text x="430" y="30" fill="#FFC53D">gap → stays separate</text>
+    <text x="40" y="130" fill="#9DB4E5">output</text>
+    <rect x="60"  y="144" width="250" height="20" rx="4" fill="rgba(255,197,61,.18)" stroke="#FFC53D" stroke-width="2"/><text x="68" y="159" fill="#FFC53D">[1,7]  end = max(4,7)</text>
+    <rect x="430" y="144" width="120" height="20" rx="4" fill="rgba(255,138,122,.2)" stroke="#FF8A7A"/><text x="438" y="159" fill="#FF8A7A">[10,12]</text>
+    <line x1="60" y1="186" x2="700" y2="186" stroke="rgba(157,180,229,.4)"/>
+    <g fill="#9DB4E5" text-anchor="middle">
+      <text x="60" y="202">1</text><text x="180" y="202">3</text><text x="240" y="202">4</text><text x="310" y="202">7</text><text x="430" y="202">10</text><text x="550" y="202">12</text>
+    </g>
+  </svg>
+  <div class="cap">after sorting, only the LAST merged interval can ever overlap the next one → single pass</div>
+  </div>
+
+  <h3 class="sec">Reference implementation</h3>
+  <pre><span class="k">def</span> <span class="f">merge</span>(intervals):
+    <span class="c"># LC 56: merge all overlapping intervals</span>
+    intervals.sort(key=<span class="k">lambda</span> iv: iv[<span class="n">0</span>])   <span class="c"># sort by START — the whole trick</span>
+    merged = [intervals[<span class="n">0</span>]]
+
+    <span class="k">for</span> start, end <span class="k">in</span> intervals[<span class="n">1</span>:]:
+        <span class="k">if</span> start &lt;= merged[-<span class="n">1</span>][<span class="n">1</span>]:        <span class="c"># overlaps the last merged one?</span>
+            merged[-<span class="n">1</span>][<span class="n">1</span>] = max(merged[-<span class="n">1</span>][<span class="n">1</span>], end)  <span class="c"># extend, don't append</span>
+        <span class="k">else</span>:
+            merged.append([start, end])    <span class="c"># clean gap → start a new block</span>
+    <span class="k">return</span> merged
+
+
+<span class="k">def</span> <span class="f">min_meeting_rooms</span>(intervals):
+    <span class="c"># LC 253: max overlap at any instant — the sweep-line variant</span>
+    starts = sorted(iv[<span class="n">0</span>] <span class="k">for</span> iv <span class="k">in</span> intervals)
+    ends   = sorted(iv[<span class="n">1</span>] <span class="k">for</span> iv <span class="k">in</span> intervals)
+    rooms = best = e = <span class="n">0</span>
+    <span class="k">for</span> s <span class="k">in</span> starts:                       <span class="c"># every start is a +1 event…</span>
+        <span class="k">while</span> ends[e] &lt;= s:                <span class="c"># …each finished meeting is a -1</span>
+            rooms -= <span class="n">1</span>; e += <span class="n">1</span>
+        rooms += <span class="n">1</span>
+        best = max(best, rooms)
+    <span class="k">return</span> best</pre>
+  <div class="note"><b>Overlap test to memorize:</b> intervals A and B overlap ⟺ <code>A.start ≤ B.end and B.start ≤ A.end</code>. Off-by-one on ≤ vs &lt; ("meetings touching at the boundary") is the most common interview bug here — clarify it out loud.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>56</td><td><a href="https://leetcode.com/problems/merge-intervals/">Merge Intervals</a></td><td><span class="diff dm">Medium</span></td><td>The base template</td></tr>
+    <tr><td>57</td><td><a href="https://leetcode.com/problems/insert-interval/">Insert Interval</a></td><td><span class="diff dm">Medium</span></td><td>Before / overlap / after three-phase scan</td></tr>
+    <tr><td>435</td><td><a href="https://leetcode.com/problems/non-overlapping-intervals/">Non-overlapping Intervals</a></td><td><span class="diff dm">Medium</span></td><td>Greedy: sort by END to keep the most</td></tr>
+    <tr><td>253</td><td><a href="https://leetcode.com/problems/meeting-rooms-ii/">Meeting Rooms II</a></td><td><span class="diff dm">Medium</span></td><td>Sweep line / min-heap — extremely common SDE 2 screen</td></tr>
+    <tr><td>986</td><td><a href="https://leetcode.com/problems/interval-list-intersections/">Interval List Intersections</a></td><td><span class="diff dm">Medium</span></td><td>Two-pointer over two interval lists</td></tr>
+    <tr><td>1851</td><td><a href="https://leetcode.com/problems/minimum-interval-to-include-each-query/">Minimum Interval to Include Each Query</a></td><td><span class="diff dh">Hard</span></td><td>Intervals + heap + offline queries (SDE 3)</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 05 BINARY SEARCH ════════════════ -->
+<section class="pat" id="p5">
+  <div class="titleblock">
+    <div class="num">05</div>
+    <div class="name"><h2>Binary Search &amp; Search-on-Answer</h2><p>Any monotonic true/false boundary can be halved — not just sorted arrays.</p></div>
+    <div class="meta"><span>Time <b>O(log n)</b></span><span>on answer: <b>O(n log range)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>sorted</b> / rotated sorted array</span>
+    <span class="kw">required <b>O(log n)</b></span>
+    <span class="kw">find <b>first / last</b> occurrence</span>
+    <span class="kw"><b>minimum</b> speed / capacity / days <b>such that</b> …</span>
+    <span class="kw"><b>maximize the minimum</b> (or minimize the maximum)</span>
+    <span class="kw">huge answer range, cheap <b>feasibility check</b></span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <text x="40" y="28" fill="#9DB4E5" font-size="12">search-on-answer: the feasibility check is monotonic — F F F F | T T T T</text>
+    <g text-anchor="middle">
+      <rect x="60"  y="50" width="70" height="44" fill="rgba(255,138,122,.14)" stroke="#FF8A7A"/><text x="95"  y="77" fill="#FF8A7A">F</text>
+      <rect x="130" y="50" width="70" height="44" fill="rgba(255,138,122,.14)" stroke="#FF8A7A"/><text x="165" y="77" fill="#FF8A7A">F</text>
+      <rect x="200" y="50" width="70" height="44" fill="rgba(255,138,122,.14)" stroke="#FF8A7A"/><text x="235" y="77" fill="#FF8A7A">F</text>
+      <rect x="270" y="50" width="70" height="44" fill="rgba(255,138,122,.14)" stroke="#FF8A7A"/><text x="305" y="77" fill="#FF8A7A">F</text>
+      <rect x="340" y="50" width="70" height="44" fill="rgba(255,197,61,.22)" stroke="#FFC53D" stroke-width="2.5"/><text x="375" y="77" fill="#FFC53D">T</text>
+      <rect x="410" y="50" width="70" height="44" fill="rgba(79,214,190,.14)" stroke="#4FD6BE"/><text x="445" y="77" fill="#4FD6BE">T</text>
+      <rect x="480" y="50" width="70" height="44" fill="rgba(79,214,190,.14)" stroke="#4FD6BE"/><text x="515" y="77" fill="#4FD6BE">T</text>
+      <rect x="550" y="50" width="70" height="44" fill="rgba(79,214,190,.14)" stroke="#4FD6BE"/><text x="585" y="77" fill="#4FD6BE">T</text>
+    </g>
+    <path d="M 375 118 L 375 100" stroke="#FFC53D" stroke-width="2" marker-end="url(#bs1)"/>
+    <text x="375" y="138" fill="#FFC53D" text-anchor="middle" font-size="12">answer = FIRST true (boundary)</text>
+    <text x="95"  y="170" fill="#FF8A7A" text-anchor="middle" font-size="12">check(mid)=F → lo = mid+1</text>
+    <text x="585" y="170" fill="#4FD6BE" text-anchor="middle" font-size="12">check(mid)=T → hi = mid</text>
+    <text x="40" y="200" fill="#9DB4E5" font-size="12">each probe kills half the range — 10⁹ candidates ≈ 30 checks</text>
+    <defs><marker id="bs1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FFC53D"/></marker></defs>
+  </svg>
+  <div class="cap">you're not searching the array — you're searching the boundary of a monotonic predicate</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — boundary template + search-on-answer</h3>
+  <pre><span class="k">def</span> <span class="f">first_true</span>(lo, hi, check):
+    <span class="c"># Universal boundary template: smallest x in [lo, hi] with check(x)=True.</span>
+    <span class="c"># Learn ONE template; never debug off-by-ones again.</span>
+    <span class="k">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="n">2</span>
+        <span class="k">if</span> check(mid):
+            hi = mid          <span class="c"># mid works → answer is mid or to the LEFT</span>
+        <span class="k">else</span>:
+            lo = mid + <span class="n">1</span>      <span class="c"># mid fails → answer is strictly RIGHT</span>
+    <span class="k">return</span> lo                 <span class="c"># lo == hi == boundary</span>
+
+
+<span class="k">def</span> <span class="f">min_eating_speed</span>(piles, h):
+    <span class="c"># LC 875 (Koko): "minimum speed such that…" → binary search the ANSWER</span>
+    <span class="k">import</span> math
+    <span class="k">def</span> <span class="f">feasible</span>(speed):     <span class="c"># monotonic: faster always still works</span>
+        <span class="k">return</span> sum(math.ceil(p / speed) <span class="k">for</span> p <span class="k">in</span> piles) &lt;= h
+    <span class="k">return</span> first_true(<span class="n">1</span>, max(piles), feasible)
+
+
+<span class="k">def</span> <span class="f">search_rotated</span>(nums, target):
+    <span class="c"># LC 33: one half of a rotated array is ALWAYS sorted — recurse into order</span>
+    lo, hi = <span class="n">0</span>, len(nums) - <span class="n">1</span>
+    <span class="k">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="n">2</span>
+        <span class="k">if</span> nums[mid] == target: <span class="k">return</span> mid
+        <span class="k">if</span> nums[lo] &lt;= nums[mid]:            <span class="c"># left half sorted</span>
+            <span class="k">if</span> nums[lo] &lt;= target &lt; nums[mid]: hi = mid - <span class="n">1</span>
+            <span class="k">else</span>:                              lo = mid + <span class="n">1</span>
+        <span class="k">else</span>:                                <span class="c"># right half sorted</span>
+            <span class="k">if</span> nums[mid] &lt; target &lt;= nums[hi]: lo = mid + <span class="n">1</span>
+            <span class="k">else</span>:                              hi = mid - <span class="n">1</span>
+    <span class="k">return</span> -<span class="n">1</span></pre>
+  <div class="note"><b>Senior-level tell:</b> "minimize the maximum" / "maximize the minimum" (LC 410, 1011, 2064) is almost always binary search on the answer with a greedy feasibility check. Saying that sentence out loud scores design points before you write a line.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>704</td><td><a href="https://leetcode.com/problems/binary-search/">Binary Search</a></td><td><span class="diff de">Easy</span></td><td>Get the invariants automatic</td></tr>
+    <tr><td>33</td><td><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">Search in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td>Reasoning about which half is sorted</td></tr>
+    <tr><td>153</td><td><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">Find Minimum in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td>Boundary form of the rotation idea</td></tr>
+    <tr><td>875</td><td><a href="https://leetcode.com/problems/koko-eating-bananas/">Koko Eating Bananas</a></td><td><span class="diff dm">Medium</span></td><td>Search-on-answer entry point</td></tr>
+    <tr><td>1011</td><td><a href="https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/">Capacity to Ship Packages in D Days</a></td><td><span class="diff dm">Medium</span></td><td>Minimize-the-max, greedy check</td></tr>
+    <tr><td>410</td><td><a href="https://leetcode.com/problems/split-array-largest-sum/">Split Array Largest Sum</a></td><td><span class="diff dh">Hard</span></td><td>Same idea, harder framing (SDE 3)</td></tr>
+    <tr><td>4</td><td><a href="https://leetcode.com/problems/median-of-two-sorted-arrays/">Median of Two Sorted Arrays</a></td><td><span class="diff dh">Hard</span></td><td>Partition binary search — classic hard screen</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 06 MONOTONIC STACK ════════════════ -->
+<section class="pat" id="p6">
+  <div class="titleblock">
+    <div class="num">06</div>
+    <div class="name"><h2>Monotonic Stack</h2><p>A stack that only keeps increasing (or decreasing) values — pops answer "next greater/smaller" queries.</p></div>
+    <div class="meta"><span>Time <b>O(n)</b> · Space <b>O(n)</b></span><span>each index pushed/popped once</span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>next greater</b> / next smaller element</span>
+    <span class="kw"><b>previous</b> greater / smaller</span>
+    <span class="kw">days until <b>warmer</b> (waiting / span)</span>
+    <span class="kw">largest <b>rectangle</b> in histogram</span>
+    <span class="kw">how far can each element <b>"see"</b></span>
+    <span class="kw">remove digits to make <b>smallest number</b></span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <!-- histogram bars -->
+    <g>
+      <rect x="60"  y="120" width="44" height="70"  fill="rgba(157,180,229,.25)" stroke="#9DB4E5"/>
+      <rect x="110" y="80"  width="44" height="110" fill="rgba(157,180,229,.25)" stroke="#9DB4E5"/>
+      <rect x="160" y="50"  width="44" height="140" fill="rgba(255,138,122,.25)" stroke="#FF8A7A" stroke-width="2"/>
+      <rect x="210" y="100" width="44" height="90"  fill="rgba(255,197,61,.3)"  stroke="#FFC53D" stroke-width="2.5"/>
+      <text x="82"  y="210" fill="#9DB4E5" text-anchor="middle">2</text>
+      <text x="132" y="210" fill="#9DB4E5" text-anchor="middle">4</text>
+      <text x="182" y="210" fill="#FF8A7A" text-anchor="middle">6</text>
+      <text x="232" y="210" fill="#FFC53D" text-anchor="middle">3 ← incoming</text>
+    </g>
+    <path d="M 232 92 Q 232 60 200 56" stroke="#FFC53D" stroke-width="2" fill="none" marker-end="url(#ms1)"/>
+    <text x="262" y="40" fill="#FFC53D" font-size="12">3 &lt; 6 → POP 6 (right wall found)</text>
+    <!-- stack -->
+    <text x="540" y="64" fill="#9DB4E5" font-size="12">stack (increasing)</text>
+    <rect x="540" y="150" width="120" height="34" fill="rgba(79,214,190,.12)" stroke="#4FD6BE"/><text x="600" y="172" fill="#4FD6BE" text-anchor="middle">2</text>
+    <rect x="540" y="112" width="120" height="34" fill="rgba(79,214,190,.12)" stroke="#4FD6BE"/><text x="600" y="134" fill="#4FD6BE" text-anchor="middle">4</text>
+    <rect x="540" y="74"  width="120" height="34" fill="rgba(255,138,122,.18)" stroke="#FF8A7A" stroke-dasharray="5 4"/><text x="600" y="96" fill="#FF8A7A" text-anchor="middle">6 ✗ popped</text>
+    <text x="500" y="210" fill="#9DB4E5" font-size="12">then push 3 → stack: [2, 3]</text>
+    <defs><marker id="ms1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FFC53D"/></marker></defs>
+  </svg>
+  <div class="cap">an element waits on the stack until the FIRST item that beats it arrives — the pop moment IS the answer</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — next greater / daily temperatures</h3>
+  <pre><span class="k">def</span> <span class="f">daily_temperatures</span>(temps):
+    <span class="c"># LC 739: for each day, how many days until a warmer one?</span>
+    res = [<span class="n">0</span>] * len(temps)
+    stack = []                              <span class="c"># indices of a DECREASING run</span>
+
+    <span class="k">for</span> i, t <span class="k">in</span> enumerate(temps):
+        <span class="c"># today's temp resolves every colder day still waiting</span>
+        <span class="k">while</span> stack <span class="k">and</span> temps[stack[-<span class="n">1</span>]] &lt; t:
+            j = stack.pop()
+            res[j] = i - j                  <span class="c"># answered at pop time</span>
+        stack.append(i)                     <span class="c"># today now waits its turn</span>
+    <span class="k">return</span> res                              <span class="c"># unresolved indices stay 0</span>
+
+
+<span class="k">def</span> <span class="f">largest_rectangle</span>(heights):
+    <span class="c"># LC 84: a pop means we finally know the bar's LEFT and RIGHT walls</span>
+    stack, best = [], <span class="n">0</span>
+    <span class="k">for</span> i, h <span class="k">in</span> enumerate(heights + [<span class="n">0</span>]):   <span class="c"># sentinel 0 flushes the stack</span>
+        <span class="k">while</span> stack <span class="k">and</span> heights[stack[-<span class="n">1</span>]] &gt;= h:
+            height = heights[stack.pop()]
+            left = stack[-<span class="n">1</span>] <span class="k">if</span> stack <span class="k">else</span> -<span class="n">1</span>
+            best = max(best, height * (i - left - <span class="n">1</span>))
+        stack.append(i)
+    <span class="k">return</span> best</pre>
+  <div class="note"><b>Choosing direction:</b> need <em>next greater</em>? Keep a <em>decreasing</em> stack. Need <em>next smaller</em>? Keep an <em>increasing</em> stack. The stack's order is always the opposite of what you're looking for.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>496</td><td><a href="https://leetcode.com/problems/next-greater-element-i/">Next Greater Element I</a></td><td><span class="diff de">Easy</span></td><td>Pure template form</td></tr>
+    <tr><td>739</td><td><a href="https://leetcode.com/problems/daily-temperatures/">Daily Temperatures</a></td><td><span class="diff dm">Medium</span></td><td>Most common interview phrasing</td></tr>
+    <tr><td>901</td><td><a href="https://leetcode.com/problems/online-stock-span/">Online Stock Span</a></td><td><span class="diff dm">Medium</span></td><td>Streaming / previous-greater flavor</td></tr>
+    <tr><td>84</td><td><a href="https://leetcode.com/problems/largest-rectangle-in-histogram/">Largest Rectangle in Histogram</a></td><td><span class="diff dh">Hard</span></td><td>The boss fight — left/right wall reasoning</td></tr>
+    <tr><td>85</td><td><a href="https://leetcode.com/problems/maximal-rectangle/">Maximal Rectangle</a></td><td><span class="diff dh">Hard</span></td><td>LC 84 applied row by row (SDE 3)</td></tr>
+    <tr><td>402</td><td><a href="https://leetcode.com/problems/remove-k-digits/">Remove K Digits</a></td><td><span class="diff dm">Medium</span></td><td>Greedy + monotonic stack hybrid</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 07 HEAP / TOP-K ════════════════ -->
+<section class="pat" id="p7">
+  <div class="titleblock">
+    <div class="num">07</div>
+    <div class="name"><h2>Heap / Top-K</h2><p>Keep only the k items that matter; the heap evicts the rest in log k time.</p></div>
+    <div class="meta"><span>Time <b>O(n log k)</b> · Space <b>O(k)</b></span><span>vs full sort <b>O(n log n)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>k largest</b> / k smallest / kth element</span>
+    <span class="kw"><b>k most frequent</b> / k closest</span>
+    <span class="kw"><b>median</b> of a data stream</span>
+    <span class="kw">merge <b>k sorted</b> lists</span>
+    <span class="kw">repeatedly take the <b>min / max</b> (scheduler)</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <text x="40" y="30" fill="#9DB4E5" font-size="12">"kth LARGEST" → keep a MIN-heap of size k · the root is the gatekeeper</text>
+    <!-- min heap of size 3 -->
+    <g text-anchor="middle">
+      <circle cx="200" cy="80" r="24" fill="rgba(255,197,61,.18)" stroke="#FFC53D" stroke-width="2.5"/>
+      <text x="200" y="86" fill="#FFC53D">7</text>
+      <text x="200" y="44" fill="#FFC53D" font-size="11">root = kth largest so far</text>
+      <circle cx="130" cy="160" r="24" fill="rgba(79,214,190,.12)" stroke="#4FD6BE"/><text x="130" y="166" fill="#4FD6BE">12</text>
+      <circle cx="270" cy="160" r="24" fill="rgba(79,214,190,.12)" stroke="#4FD6BE"/><text x="270" y="166" fill="#4FD6BE">9</text>
+      <line x1="186" y1="100" x2="144" y2="140" stroke="#9DB4E5"/>
+      <line x1="214" y1="100" x2="256" y2="140" stroke="#9DB4E5"/>
+    </g>
+    <!-- incoming -->
+    <g text-anchor="middle">
+      <rect x="430" y="62" width="56" height="36" rx="6" fill="rgba(79,214,190,.16)" stroke="#4FD6BE"/><text x="458" y="85" fill="#4FD6BE">10</text>
+      <text x="458" y="120" fill="#4FD6BE" font-size="11">10 &gt; 7 → evict root, push</text>
+      <rect x="612" y="62" width="56" height="36" rx="6" fill="rgba(255,138,122,.14)" stroke="#FF8A7A"/><text x="640" y="85" fill="#FF8A7A">5</text>
+      <text x="640" y="120" fill="#FF8A7A" font-size="11">5 ≤ 7 → discard</text>
+    </g>
+    <path d="M 424 80 L 240 80" stroke="#4FD6BE" stroke-width="2" marker-end="url(#hp1)"/>
+    <text x="40" y="205" fill="#9DB4E5" font-size="12">heap never exceeds k → O(n log k) time, O(k) memory — works on infinite streams</text>
+    <defs><marker id="hp1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4FD6BE"/></marker></defs>
+  </svg>
+  <div class="cap">counter-intuitive but key: kth LARGEST uses a MIN-heap (and vice versa) — the root is the weakest member of the elite club</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — kth largest &amp; two-heap median</h3>
+  <pre><span class="k">import</span> heapq
+
+<span class="k">def</span> <span class="f">kth_largest</span>(nums, k):
+    <span class="c"># LC 215: min-heap of size k — root is always the kth largest</span>
+    heap = nums[:k]
+    heapq.heapify(heap)                     <span class="c"># O(k)</span>
+    <span class="k">for</span> x <span class="k">in</span> nums[k:]:
+        <span class="k">if</span> x &gt; heap[<span class="n">0</span>]:                     <span class="c"># beats the weakest member?</span>
+            heapq.heapreplace(heap, x)      <span class="c"># pop root + push, one log k op</span>
+    <span class="k">return</span> heap[<span class="n">0</span>]
+
+
+<span class="k">class</span> <span class="f">MedianFinder</span>:
+    <span class="c"># LC 295: two heaps split the stream around the median</span>
+    <span class="k">def</span> <span class="f">__init__</span>(self):
+        self.lo = []   <span class="c"># MAX-heap (negated) — smaller half</span>
+        self.hi = []   <span class="c"># MIN-heap            — larger half</span>
+
+    <span class="k">def</span> <span class="f">addNum</span>(self, num):
+        heapq.heappush(self.lo, -num)                    <span class="c"># 1) into smaller half</span>
+        heapq.heappush(self.hi, -heapq.heappop(self.lo)) <span class="c"># 2) rebalance max → min</span>
+        <span class="k">if</span> len(self.hi) &gt; len(self.lo):                  <span class="c"># 3) keep lo ≥ hi in size</span>
+            heapq.heappush(self.lo, -heapq.heappop(self.hi))
+
+    <span class="k">def</span> <span class="f">findMedian</span>(self):
+        <span class="k">if</span> len(self.lo) &gt; len(self.hi):
+            <span class="k">return</span> -self.lo[<span class="n">0</span>]
+        <span class="k">return</span> (-self.lo[<span class="n">0</span>] + self.hi[<span class="n">0</span>]) / <span class="n">2</span></pre>
+  <div class="note"><b>Interview nuance:</b> for "kth largest," mention quickselect (average O(n)) as the alternative and explain why you'd still pick the heap for a <em>stream</em> or when k ≪ n. Python's <code>heapq</code> is min-heap only — negate values for max-heap behavior.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>215</td><td><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/">Kth Largest Element in an Array</a></td><td><span class="diff dm">Medium</span></td><td>Heap vs quickselect discussion</td></tr>
+    <tr><td>347</td><td><a href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent Elements</a></td><td><span class="diff dm">Medium</span></td><td>Count + heap (or bucket sort follow-up)</td></tr>
+    <tr><td>973</td><td><a href="https://leetcode.com/problems/k-closest-points-to-origin/">K Closest Points to Origin</a></td><td><span class="diff dm">Medium</span></td><td>Max-heap of size k on distance</td></tr>
+    <tr><td>23</td><td><a href="https://leetcode.com/problems/merge-k-sorted-lists/">Merge k Sorted Lists</a></td><td><span class="diff dh">Hard</span></td><td>Heap of list heads — classic SDE 2 screen</td></tr>
+    <tr><td>295</td><td><a href="https://leetcode.com/problems/find-median-from-data-stream/">Find Median from Data Stream</a></td><td><span class="diff dh">Hard</span></td><td>Two-heap invariant design</td></tr>
+    <tr><td>621</td><td><a href="https://leetcode.com/problems/task-scheduler/">Task Scheduler</a></td><td><span class="diff dm">Medium</span></td><td>Heap + greedy simulation</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 08 BFS ════════════════ -->
+<section class="pat" id="p8">
+  <div class="titleblock">
+    <div class="num">08</div>
+    <div class="name"><h2>Breadth-First Search</h2><p>Explore in rings. The first time BFS touches a node IS the shortest unweighted path.</p></div>
+    <div class="meta"><span>Time <b>O(V + E)</b> · Space <b>O(V)</b></span><span>grid: <b>O(m·n)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>shortest path</b> with unit / equal weights</span>
+    <span class="kw"><b>minimum number of steps</b> / moves</span>
+    <span class="kw"><b>level order</b> traversal</span>
+    <span class="kw">spreads / <b>rotting</b> / infection per minute</span>
+    <span class="kw">nearest <b>exit / gate / 0</b></span>
+    <span class="antikw">✗ weighted edges → Dijkstra (heap-BFS)</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <!-- grid 7x4 of rings -->
+    <g text-anchor="middle">
+      <!-- distances from source S at (3,1) col,row 0-indexed; cell 56px at x=80 y=30 -->
+      <!-- row 0 -->
+      <rect x="136" y="30" width="52" height="42" fill="rgba(255,197,61,.18)" stroke="rgba(255,197,61,.6)"/><text x="162" y="57" fill="#FFC53D">2</text>
+      <rect x="192" y="30" width="52" height="42" fill="rgba(79,214,190,.18)" stroke="rgba(79,214,190,.7)"/><text x="218" y="57" fill="#4FD6BE">1</text>
+      <rect x="248" y="30" width="52" height="42" fill="rgba(255,197,61,.18)" stroke="rgba(255,197,61,.6)"/><text x="274" y="57" fill="#FFC53D">2</text>
+      <rect x="304" y="30" width="52" height="42" fill="rgba(255,138,122,.16)" stroke="rgba(255,138,122,.6)"/><text x="330" y="57" fill="#FF8A7A">3</text>
+      <rect x="80" y="30" width="52" height="42" fill="rgba(255,138,122,.16)" stroke="rgba(255,138,122,.6)"/><text x="106" y="57" fill="#FF8A7A">3</text>
+      <!-- row 1 -->
+      <rect x="80"  y="76" width="52" height="42" fill="rgba(255,197,61,.18)" stroke="rgba(255,197,61,.6)"/><text x="106" y="103" fill="#FFC53D">2</text>
+      <rect x="136" y="76" width="52" height="42" fill="rgba(79,214,190,.18)" stroke="rgba(79,214,190,.7)"/><text x="162" y="103" fill="#4FD6BE">1</text>
+      <rect x="192" y="76" width="52" height="42" fill="rgba(232,238,251,.22)" stroke="#E8EEFB" stroke-width="2.5"/><text x="218" y="103" fill="#E8EEFB" font-weight="bold">S</text>
+      <rect x="248" y="76" width="52" height="42" fill="rgba(79,214,190,.18)" stroke="rgba(79,214,190,.7)"/><text x="274" y="103" fill="#4FD6BE">1</text>
+      <rect x="304" y="76" width="52" height="42" fill="rgba(255,197,61,.18)" stroke="rgba(255,197,61,.6)"/><text x="330" y="103" fill="#FFC53D">2</text>
+      <!-- row 2 -->
+      <rect x="80"  y="122" width="52" height="42" fill="rgba(255,138,122,.16)" stroke="rgba(255,138,122,.6)"/><text x="106" y="149" fill="#FF8A7A">3</text>
+      <rect x="136" y="122" width="52" height="42" fill="rgba(255,197,61,.18)" stroke="rgba(255,197,61,.6)"/><text x="162" y="149" fill="#FFC53D">2</text>
+      <rect x="192" y="122" width="52" height="42" fill="rgba(79,214,190,.18)" stroke="rgba(79,214,190,.7)"/><text x="218" y="149" fill="#4FD6BE">1</text>
+      <rect x="248" y="122" width="52" height="42" fill="#0D1B3D" stroke="rgba(157,180,229,.5)"/><text x="274" y="149" fill="#9DB4E5">▦</text>
+      <rect x="304" y="122" width="52" height="42" fill="rgba(255,138,122,.16)" stroke="rgba(255,138,122,.6)"/><text x="330" y="149" fill="#FF8A7A">3</text>
+    </g>
+    <text x="420" y="60"  fill="#4FD6BE">ring 1 — queue after S</text>
+    <text x="420" y="105" fill="#FFC53D">ring 2 — next level</text>
+    <text x="420" y="150" fill="#FF8A7A">ring 3 — ▦ = wall (skipped)</text>
+    <text x="80" y="198" fill="#9DB4E5" font-size="12">process the queue LEVEL BY LEVEL · dist = number of rings crossed</text>
+    <text x="80" y="216" fill="#9DB4E5" font-size="12">mark visited WHEN ENQUEUED, not when popped</text>
+  </svg>
+  <div class="cap">BFS = ripples in a pond — equal distance frontier expands one ring per iteration</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — multi-source grid BFS</h3>
+  <pre><span class="k">from</span> collections <span class="k">import</span> deque
+
+<span class="k">def</span> <span class="f">oranges_rotting</span>(grid):
+    <span class="c"># LC 994: rot spreads from ALL rotten oranges simultaneously</span>
+    <span class="c"># → seed the queue with EVERY source (multi-source BFS)</span>
+    rows, cols = len(grid), len(grid[<span class="n">0</span>])
+    q, fresh = deque(), <span class="n">0</span>
+
+    <span class="k">for</span> r <span class="k">in</span> range(rows):
+        <span class="k">for</span> c <span class="k">in</span> range(cols):
+            <span class="k">if</span> grid[r][c] == <span class="n">2</span>: q.append((r, c, <span class="n">0</span>))  <span class="c"># (cell, minute)</span>
+            <span class="k">elif</span> grid[r][c] == <span class="n">1</span>: fresh += <span class="n">1</span>
+
+    minutes = <span class="n">0</span>
+    <span class="k">while</span> q:
+        r, c, t = q.popleft()
+        minutes = max(minutes, t)
+        <span class="k">for</span> dr, dc <span class="k">in</span> ((<span class="n">1</span>,<span class="n">0</span>), (-<span class="n">1</span>,<span class="n">0</span>), (<span class="n">0</span>,<span class="n">1</span>), (<span class="n">0</span>,-<span class="n">1</span>)):
+            nr, nc = r + dr, c + dc
+            <span class="k">if</span> <span class="n">0</span> &lt;= nr &lt; rows <span class="k">and</span> <span class="n">0</span> &lt;= nc &lt; cols <span class="k">and</span> grid[nr][nc] == <span class="n">1</span>:
+                grid[nr][nc] = <span class="n">2</span>        <span class="c"># mark visited ON ENQUEUE — avoids dupes</span>
+                fresh -= <span class="n">1</span>
+                q.append((nr, nc, t + <span class="n">1</span>))
+
+    <span class="k">return</span> minutes <span class="k">if</span> fresh == <span class="n">0</span> <span class="k">else</span> -<span class="n">1</span></pre>
+  <div class="note"><b>Senior-level escalations:</b> weighted edges → Dijkstra (swap deque for a min-heap). Edge weights only 0/1 → 0-1 BFS with a deque. Two ends known → bidirectional BFS (LC 127 follow-up). Knowing the ladder is an SDE 3 signal.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>102</td><td><a href="https://leetcode.com/problems/binary-tree-level-order-traversal/">Binary Tree Level Order Traversal</a></td><td><span class="diff dm">Medium</span></td><td>Level-by-level queue mechanics</td></tr>
+    <tr><td>994</td><td><a href="https://leetcode.com/problems/rotting-oranges/">Rotting Oranges</a></td><td><span class="diff dm">Medium</span></td><td>Multi-source BFS — very frequent</td></tr>
+    <tr><td>542</td><td><a href="https://leetcode.com/problems/01-matrix/">01 Matrix</a></td><td><span class="diff dm">Medium</span></td><td>Start BFS from targets, not sources</td></tr>
+    <tr><td>1091</td><td><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">Shortest Path in Binary Matrix</a></td><td><span class="diff dm">Medium</span></td><td>8-directional shortest path</td></tr>
+    <tr><td>127</td><td><a href="https://leetcode.com/problems/word-ladder/">Word Ladder</a></td><td><span class="diff dh">Hard</span></td><td>BFS over an implicit graph of words</td></tr>
+    <tr><td>752</td><td><a href="https://leetcode.com/problems/open-the-lock/">Open the Lock</a></td><td><span class="diff dm">Medium</span></td><td>State-space BFS (states = nodes)</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 09 DFS & BACKTRACKING ════════════════ -->
+<section class="pat" id="p9">
+  <div class="titleblock">
+    <div class="num">09</div>
+    <div class="name"><h2>DFS &amp; Backtracking</h2><p>Walk the decision tree: choose → explore → un-choose. Prune branches that can't win.</p></div>
+    <div class="meta"><span>Time <b>O(b^d)</b> worst case</span><span>islands: <b>O(m·n)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>generate all</b> combinations / permutations / subsets</span>
+    <span class="kw"><b>all possible</b> ways / paths / partitions</span>
+    <span class="kw">place pieces with <b>constraints</b> (N-Queens, Sudoku)</span>
+    <span class="kw"><b>word search</b> in a grid</span>
+    <span class="kw">count <b>islands</b> / connected regions / flood fill</span>
+    <span class="kw">small n (<b>n ≤ ~20</b>) — exponential is expected</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <g text-anchor="middle">
+      <circle cx="380" cy="40" r="20" fill="rgba(232,238,251,.15)" stroke="#E8EEFB"/><text x="380" y="45" fill="#E8EEFB">[]</text>
+      <!-- level 1 -->
+      <circle cx="200" cy="120" r="20" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="200" y="125" fill="#4FD6BE">[1]</text>
+      <circle cx="380" cy="120" r="20" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="380" y="125" fill="#4FD6BE">[2]</text>
+      <circle cx="560" cy="120" r="20" fill="rgba(255,138,122,.15)" stroke="#FF8A7A" stroke-dasharray="5 4"/><text x="560" y="125" fill="#FF8A7A">[3]</text>
+      <!-- level 2 -->
+      <circle cx="140" cy="200" r="20" fill="rgba(255,197,61,.18)" stroke="#FFC53D"/><text x="140" y="205" fill="#FFC53D" font-size="11">[1,2]</text>
+      <circle cx="260" cy="200" r="20" fill="rgba(255,197,61,.18)" stroke="#FFC53D"/><text x="260" y="205" fill="#FFC53D" font-size="11">[1,3]</text>
+      <circle cx="380" cy="200" r="20" fill="rgba(255,197,61,.18)" stroke="#FFC53D"/><text x="380" y="205" fill="#FFC53D" font-size="11">[2,3]</text>
+      <line x1="365" y1="54" x2="215" y2="106" stroke="#4FD6BE"/>
+      <line x1="380" y1="60" x2="380" y2="100" stroke="#4FD6BE"/>
+      <line x1="395" y1="54" x2="545" y2="106" stroke="#FF8A7A" stroke-dasharray="5 4"/>
+      <line x1="186" y1="134" x2="152" y2="182" stroke="#FFC53D"/>
+      <line x1="214" y1="134" x2="248" y2="182" stroke="#FFC53D"/>
+      <line x1="380" y1="140" x2="380" y2="180" stroke="#FFC53D"/>
+    </g>
+    <text x="600" y="160" fill="#FF8A7A" font-size="12">✂ PRUNED:</text>
+    <text x="600" y="178" fill="#FF8A7A" font-size="12">constraint says</text>
+    <text x="600" y="196" fill="#FF8A7A" font-size="12">this can't succeed</text>
+    <text x="60" y="70" fill="#9DB4E5" font-size="12">choose ↓</text>
+    <text x="60" y="88" fill="#9DB4E5" font-size="12">explore ↓</text>
+    <text x="60" y="106" fill="#9DB4E5" font-size="12">un-choose ↑</text>
+  </svg>
+  <div class="cap">the recursion IS the tree — path = current choices · leaves (or every node) = results · pruning makes it tractable</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — backtracking template + islands</h3>
+  <pre><span class="k">def</span> <span class="f">subsets</span>(nums):
+    <span class="c"># LC 78: the universal backtracking skeleton</span>
+    res, path = [], []
+
+    <span class="k">def</span> <span class="f">backtrack</span>(start):
+        res.append(path[:])             <span class="c"># record a copy of current state</span>
+        <span class="k">for</span> i <span class="k">in</span> range(start, len(nums)):
+            path.append(nums[i])        <span class="c"># 1) CHOOSE</span>
+            backtrack(i + <span class="n">1</span>)            <span class="c"># 2) EXPLORE (start=i+1 → no reuse)</span>
+            path.pop()                  <span class="c"># 3) UN-CHOOSE — restore state!</span>
+
+    backtrack(<span class="n">0</span>)
+    <span class="k">return</span> res
+    <span class="c"># permutations: loop ALL i, track a `used` set</span>
+    <span class="c"># combination sum: recurse with i (not i+1) to allow reuse</span>
+
+
+<span class="k">def</span> <span class="f">num_islands</span>(grid):
+    <span class="c"># LC 200: DFS flood fill — count connected components</span>
+    rows, cols = len(grid), len(grid[<span class="n">0</span>])
+
+    <span class="k">def</span> <span class="f">sink</span>(r, c):
+        <span class="k">if</span> <span class="k">not</span> (<span class="n">0</span> &lt;= r &lt; rows <span class="k">and</span> <span class="n">0</span> &lt;= c &lt; cols) <span class="k">or</span> grid[r][c] != <span class="s">"1"</span>:
+            <span class="k">return</span>
+        grid[r][c] = <span class="s">"0"</span>                <span class="c"># mark visited by sinking the land</span>
+        <span class="k">for</span> dr, dc <span class="k">in</span> ((<span class="n">1</span>,<span class="n">0</span>), (-<span class="n">1</span>,<span class="n">0</span>), (<span class="n">0</span>,<span class="n">1</span>), (<span class="n">0</span>,-<span class="n">1</span>)):
+            sink(r + dr, c + dc)
+
+    count = <span class="n">0</span>
+    <span class="k">for</span> r <span class="k">in</span> range(rows):
+        <span class="k">for</span> c <span class="k">in</span> range(cols):
+            <span class="k">if</span> grid[r][c] == <span class="s">"1"</span>:
+                count += <span class="n">1</span>              <span class="c"># new island found…</span>
+                sink(r, c)              <span class="c"># …erase all of it</span>
+    <span class="k">return</span> count</pre>
+  <div class="note"><b>Complexity script:</b> subsets → O(2ⁿ·n), permutations → O(n!·n), and say it unprompted. The single most common backtracking bug is forgetting <code>path.pop()</code> or appending <code>path</code> instead of <code>path[:]</code>.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>78</td><td><a href="https://leetcode.com/problems/subsets/">Subsets</a></td><td><span class="diff dm">Medium</span></td><td>The skeleton, undecorated</td></tr>
+    <tr><td>46</td><td><a href="https://leetcode.com/problems/permutations/">Permutations</a></td><td><span class="diff dm">Medium</span></td><td>Used-set variant</td></tr>
+    <tr><td>39</td><td><a href="https://leetcode.com/problems/combination-sum/">Combination Sum</a></td><td><span class="diff dm">Medium</span></td><td>Reuse-allowed recursion index</td></tr>
+    <tr><td>79</td><td><a href="https://leetcode.com/problems/word-search/">Word Search</a></td><td><span class="diff dm">Medium</span></td><td>Backtracking on a grid, mark/unmark</td></tr>
+    <tr><td>200</td><td><a href="https://leetcode.com/problems/number-of-islands/">Number of Islands</a></td><td><span class="diff dm">Medium</span></td><td>Possibly the most-asked question in industry</td></tr>
+    <tr><td>51</td><td><a href="https://leetcode.com/problems/n-queens/">N-Queens</a></td><td><span class="diff dh">Hard</span></td><td>Constraint propagation + pruning</td></tr>
+    <tr><td>131</td><td><a href="https://leetcode.com/problems/palindrome-partitioning/">Palindrome Partitioning</a></td><td><span class="diff dm">Medium</span></td><td>Partition-style branching</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 10 DYNAMIC PROGRAMMING ════════════════ -->
+<section class="pat" id="p10">
+  <div class="titleblock">
+    <div class="num">10</div>
+    <div class="name"><h2>Dynamic Programming</h2><p>Backtracking's decision tree, but overlapping subproblems get solved once and cached.</p></div>
+    <div class="meta"><span>Time <b>O(states × transitions)</b></span><span>often <b>O(n)</b> or <b>O(n·m)</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>count the number of ways</b></span>
+    <span class="kw"><b>maximum / minimum</b> … over a sequence of choices</span>
+    <span class="kw">can you <b>reach / partition / form</b> target</span>
+    <span class="kw"><b>longest</b> increasing / common subsequence</span>
+    <span class="kw">take or skip · <b>rob or not rob</b></span>
+    <span class="kw">edit / convert one string to another</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <text x="40" y="28" fill="#9DB4E5" font-size="12">House Robber: dp[i] depends only on the two states behind it</text>
+    <g text-anchor="middle">
+      <rect x="60"  y="84" width="90" height="48" rx="6" fill="rgba(157,180,229,.15)" stroke="#9DB4E5"/><text x="105" y="104" fill="#9DB4E5" font-size="11">dp[i-2]</text><text x="105" y="122" fill="#E8EEFB">10</text>
+      <rect x="180" y="84" width="90" height="48" rx="6" fill="rgba(157,180,229,.15)" stroke="#9DB4E5"/><text x="225" y="104" fill="#9DB4E5" font-size="11">dp[i-1]</text><text x="225" y="122" fill="#E8EEFB">12</text>
+      <rect x="320" y="84" width="110" height="48" rx="6" fill="rgba(255,197,61,.2)" stroke="#FFC53D" stroke-width="2.5"/><text x="375" y="104" fill="#FFC53D" font-size="11">dp[i] = max(…)</text><text x="375" y="122" fill="#FFC53D">17</text>
+    </g>
+    <path d="M 150 94 C 230 44, 280 44, 330 84" stroke="#4FD6BE" stroke-width="2" fill="none" marker-end="url(#dp1)"/>
+    <text x="240" y="52" fill="#4FD6BE" font-size="12" text-anchor="middle">rob house i: dp[i-2] + nums[i]</text>
+    <path d="M 270 114 L 314 114" stroke="#FF8A7A" stroke-width="2" marker-end="url(#dp2)"/>
+    <text x="292" y="154" fill="#FF8A7A" font-size="12" text-anchor="middle">skip: dp[i-1]</text>
+    <text x="490" y="78" fill="#9DB4E5" font-size="12">recipe:</text>
+    <text x="490" y="98"  fill="#E8EEFB" font-size="12">1. define the STATE</text>
+    <text x="490" y="118" fill="#E8EEFB" font-size="12">2. write the RECURRENCE</text>
+    <text x="490" y="138" fill="#E8EEFB" font-size="12">3. set BASE CASES</text>
+    <text x="490" y="158" fill="#E8EEFB" font-size="12">4. pick fill ORDER</text>
+    <text x="40" y="200" fill="#9DB4E5" font-size="12">memoization = recursion + cache (top-down) · tabulation = fill table (bottom-up) — same math</text>
+    <defs>
+      <marker id="dp1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4FD6BE"/></marker>
+      <marker id="dp2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8A7A"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">if your backtracking tree solves the same subproblem twice, you've found a DP — cache it</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — 1D, knapsack, 2D strings</h3>
+  <pre><span class="k">def</span> <span class="f">rob</span>(nums):
+    <span class="c"># LC 198 — 1D DP with O(1) space (rolling variables)</span>
+    prev2 = prev1 = <span class="n">0</span>          <span class="c"># dp[i-2], dp[i-1]</span>
+    <span class="k">for</span> x <span class="k">in</span> nums:
+        prev2, prev1 = prev1, max(prev1, prev2 + x)  <span class="c"># skip vs rob</span>
+    <span class="k">return</span> prev1
+
+
+<span class="k">def</span> <span class="f">can_partition</span>(nums):
+    <span class="c"># LC 416 — 0/1 knapsack: can a subset hit sum/2?</span>
+    total = sum(nums)
+    <span class="k">if</span> total % <span class="n">2</span>: <span class="k">return</span> <span class="k">False</span>
+    target = total // <span class="n">2</span>
+    dp = [<span class="k">True</span>] + [<span class="k">False</span>] * target   <span class="c"># dp[s] = "sum s is reachable"</span>
+    <span class="k">for</span> num <span class="k">in</span> nums:
+        <span class="k">for</span> s <span class="k">in</span> range(target, num - <span class="n">1</span>, -<span class="n">1</span>):  <span class="c"># REVERSE → each item used once</span>
+            dp[s] = dp[s] <span class="k">or</span> dp[s - num]
+    <span class="k">return</span> dp[target]
+    <span class="c"># unbounded knapsack (LC 322 Coin Change): iterate s FORWARD instead</span>
+
+
+<span class="k">def</span> <span class="f">longest_common_subsequence</span>(a, b):
+    <span class="c"># LC 1143 — the 2D string-DP archetype (edit distance is a cousin)</span>
+    m, n = len(a), len(b)
+    dp = [[<span class="n">0</span>] * (n + <span class="n">1</span>) <span class="k">for</span> _ <span class="k">in</span> range(m + <span class="n">1</span>)]
+    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">1</span>, m + <span class="n">1</span>):
+        <span class="k">for</span> j <span class="k">in</span> range(<span class="n">1</span>, n + <span class="n">1</span>):
+            <span class="k">if</span> a[i-<span class="n">1</span>] == b[j-<span class="n">1</span>]:
+                dp[i][j] = dp[i-<span class="n">1</span>][j-<span class="n">1</span>] + <span class="n">1</span>          <span class="c"># match → extend diagonal</span>
+            <span class="k">else</span>:
+                dp[i][j] = max(dp[i-<span class="n">1</span>][j], dp[i][j-<span class="n">1</span>]) <span class="c"># drop one char</span>
+    <span class="k">return</span> dp[m][n]</pre>
+  <div class="note"><b>SDE 3 framing:</b> always derive the brute-force recursion first, point at the repeated subproblems, then add the cache. Jumping straight to a table you memorized reads as pattern-matching; deriving it reads as engineering. Mention the space optimization (2D → two rows) as a closer.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>70</td><td><a href="https://leetcode.com/problems/climbing-stairs/">Climbing Stairs</a></td><td><span class="diff de">Easy</span></td><td>Recurrence-spotting warm-up</td></tr>
+    <tr><td>198</td><td><a href="https://leetcode.com/problems/house-robber/">House Robber</a></td><td><span class="diff dm">Medium</span></td><td>Take/skip decision DP</td></tr>
+    <tr><td>322</td><td><a href="https://leetcode.com/problems/coin-change/">Coin Change</a></td><td><span class="diff dm">Medium</span></td><td>Unbounded knapsack, min-cost form</td></tr>
+    <tr><td>416</td><td><a href="https://leetcode.com/problems/partition-equal-subset-sum/">Partition Equal Subset Sum</a></td><td><span class="diff dm">Medium</span></td><td>0/1 knapsack, reverse iteration</td></tr>
+    <tr><td>300</td><td><a href="https://leetcode.com/problems/longest-increasing-subsequence/">Longest Increasing Subsequence</a></td><td><span class="diff dm">Medium</span></td><td>O(n²) → O(n log n) follow-up</td></tr>
+    <tr><td>1143</td><td><a href="https://leetcode.com/problems/longest-common-subsequence/">Longest Common Subsequence</a></td><td><span class="diff dm">Medium</span></td><td>2D grid-of-strings archetype</td></tr>
+    <tr><td>72</td><td><a href="https://leetcode.com/problems/edit-distance/">Edit Distance</a></td><td><span class="diff dh">Hard</span></td><td>Three-way transition reasoning</td></tr>
+    <tr><td>62</td><td><a href="https://leetcode.com/problems/unique-paths/">Unique Paths</a></td><td><span class="diff dm">Medium</span></td><td>Grid path counting base case</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 11 TOPOLOGICAL SORT ════════════════ -->
+<section class="pat" id="p11">
+  <div class="titleblock">
+    <div class="num">11</div>
+    <div class="name"><h2>Topological Sort</h2><p>Order a DAG so every dependency comes before its dependents. Kahn's = BFS by in-degree.</p></div>
+    <div class="meta"><span>Time <b>O(V + E)</b> · Space <b>O(V)</b></span><span>also detects cycles free</span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>prerequisites</b> / course schedule</span>
+    <span class="kw"><b>dependency</b> / build order</span>
+    <span class="kw">task A <b>must come before</b> task B</span>
+    <span class="kw">is the ordering <b>possible</b>? (cycle check)</span>
+    <span class="kw">alien <b>dictionary</b> / derive an ordering from constraints</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <g text-anchor="middle">
+      <circle cx="100" cy="70"  r="24" fill="rgba(79,214,190,.18)" stroke="#4FD6BE" stroke-width="2.5"/><text x="100" y="76" fill="#4FD6BE">A</text>
+      <circle cx="100" cy="160" r="24" fill="rgba(79,214,190,.18)" stroke="#4FD6BE" stroke-width="2.5"/><text x="100" y="166" fill="#4FD6BE">B</text>
+      <circle cx="280" cy="70"  r="24" fill="none" stroke="#9DB4E5"/><text x="280" y="76" fill="#E8EEFB">C</text>
+      <circle cx="280" cy="160" r="24" fill="none" stroke="#9DB4E5"/><text x="280" y="166" fill="#E8EEFB">D</text>
+      <circle cx="450" cy="115" r="24" fill="none" stroke="#9DB4E5"/><text x="450" y="121" fill="#E8EEFB">E</text>
+      <line x1="124" y1="70"  x2="250" y2="70"  stroke="#9DB4E5" marker-end="url(#ts1)"/>
+      <line x1="124" y1="160" x2="250" y2="160" stroke="#9DB4E5" marker-end="url(#ts1)"/>
+      <line x1="121" y1="84"  x2="252" y2="148" stroke="#9DB4E5" marker-end="url(#ts1)"/>
+      <line x1="302" y1="81"  x2="424" y2="105" stroke="#9DB4E5" marker-end="url(#ts1)"/>
+      <line x1="302" y1="149" x2="424" y2="125" stroke="#9DB4E5" marker-end="url(#ts1)"/>
+      <text x="100" y="32" fill="#4FD6BE" font-size="12">in-degree 0 → take first</text>
+      <text x="280" y="32" fill="#9DB4E5" font-size="11">in-deg C=2, D=1</text>
+      <text x="450" y="74" fill="#9DB4E5" font-size="11">in-deg E=2</text>
+    </g>
+    <text x="560" y="80"  fill="#9DB4E5" font-size="12">peel layer by layer:</text>
+    <text x="560" y="102" fill="#E8EEFB" font-size="12">order: A B → D C → E</text>
+    <text x="560" y="130" fill="#FFC53D" font-size="12">processed &lt; V at end</text>
+    <text x="560" y="148" fill="#FFC53D" font-size="12">⇒ a CYCLE exists</text>
+    <text x="40" y="205" fill="#9DB4E5" font-size="12">removing a node decrements its children's in-degree — any child hitting 0 joins the queue</text>
+    <defs><marker id="ts1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9DB4E5"/></marker></defs>
+  </svg>
+  <div class="cap">think "peeling an onion": repeatedly remove whatever has nothing pointing at it</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — Kahn's algorithm</h3>
+  <pre><span class="k">from</span> collections <span class="k">import</span> deque, defaultdict
+
+<span class="k">def</span> <span class="f">find_order</span>(num_courses, prerequisites):
+    <span class="c"># LC 210: return any valid course order, or [] if impossible</span>
+    graph = defaultdict(list)
+    indeg = [<span class="n">0</span>] * num_courses
+
+    <span class="k">for</span> course, pre <span class="k">in</span> prerequisites:
+        graph[pre].append(course)       <span class="c"># edge: pre → course</span>
+        indeg[course] += <span class="n">1</span>              <span class="c"># course gained a dependency</span>
+
+    <span class="c"># start with everything that has NO unmet dependencies</span>
+    q = deque(c <span class="k">for</span> c <span class="k">in</span> range(num_courses) <span class="k">if</span> indeg[c] == <span class="n">0</span>)
+    order = []
+
+    <span class="k">while</span> q:
+        node = q.popleft()
+        order.append(node)              <span class="c"># safe to take: deps all done</span>
+        <span class="k">for</span> nxt <span class="k">in</span> graph[node]:
+            indeg[nxt] -= <span class="n">1</span>             <span class="c"># one dependency satisfied</span>
+            <span class="k">if</span> indeg[nxt] == <span class="n">0</span>:
+                q.append(nxt)           <span class="c"># fully unblocked → schedule it</span>
+
+    <span class="c"># couldn't place every node ⇒ a cycle blocked the rest</span>
+    <span class="k">return</span> order <span class="k">if</span> len(order) == num_courses <span class="k">else</span> []</pre>
+  <div class="note"><b>Real-world hook (great for SDE 3 rounds):</b> this is literally how build systems (Bazel, Make), package managers, and Airflow DAGs schedule work. Connecting the algorithm to systems you've operated is exactly the seniority signal interviewers look for.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>207</td><td><a href="https://leetcode.com/problems/course-schedule/">Course Schedule</a></td><td><span class="diff dm">Medium</span></td><td>Cycle detection via Kahn's</td></tr>
+    <tr><td>210</td><td><a href="https://leetcode.com/problems/course-schedule-ii/">Course Schedule II</a></td><td><span class="diff dm">Medium</span></td><td>Produce the actual ordering</td></tr>
+    <tr><td>269</td><td><a href="https://leetcode.com/problems/alien-dictionary/">Alien Dictionary</a></td><td><span class="diff dh">Hard</span></td><td>Build the graph yourself first (SDE 3 favorite)</td></tr>
+    <tr><td>310</td><td><a href="https://leetcode.com/problems/minimum-height-trees/">Minimum Height Trees</a></td><td><span class="diff dm">Medium</span></td><td>Peel leaves — topo-sort thinking on trees</td></tr>
+    <tr><td>2115</td><td><a href="https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/">Find All Possible Recipes</a></td><td><span class="diff dm">Medium</span></td><td>Modern phrasing of dependency resolution</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 12 UNION-FIND ════════════════ -->
+<section class="pat" id="p12">
+  <div class="titleblock">
+    <div class="num">12</div>
+    <div class="name"><h2>Union-Find (Disjoint Set)</h2><p>Near-O(1) "are these connected?" and "merge these groups" — connectivity that evolves over time.</p></div>
+    <div class="meta"><span>Time <b>O(α(n)) ≈ O(1)</b> per op</span><span>with compression + rank</span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw">groups / accounts that <b>merge</b></span>
+    <span class="kw">are A and B <b>connected</b>? (many queries)</span>
+    <span class="kw">number of <b>connected components / provinces</b></span>
+    <span class="kw"><b>redundant</b> connection / edge that creates a cycle</span>
+    <span class="kw">edges arrive <b>over time</b> (dynamic connectivity)</span>
+    <span class="antikw">✗ need paths, not just connectivity → BFS/DFS</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <g text-anchor="middle">
+      <!-- forest before union -->
+      <text x="150" y="30" fill="#9DB4E5" font-size="12">two trees (roots = group IDs)</text>
+      <circle cx="110" cy="60" r="20" fill="rgba(79,214,190,.18)" stroke="#4FD6BE" stroke-width="2.5"/><text x="110" y="66" fill="#4FD6BE">1</text>
+      <circle cx="70"  cy="130" r="18" fill="none" stroke="#9DB4E5"/><text x="70" y="136" fill="#E8EEFB">2</text>
+      <circle cx="150" cy="130" r="18" fill="none" stroke="#9DB4E5"/><text x="150" y="136" fill="#E8EEFB">3</text>
+      <line x1="80" y1="116" x2="100" y2="78" stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <line x1="140" y1="116" x2="120" y2="78" stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <circle cx="280" cy="60" r="20" fill="rgba(255,138,122,.18)" stroke="#FF8A7A" stroke-width="2.5"/><text x="280" y="66" fill="#FF8A7A">5</text>
+      <circle cx="280" cy="130" r="18" fill="none" stroke="#9DB4E5"/><text x="280" y="136" fill="#E8EEFB">6</text>
+      <line x1="280" y1="112" x2="280" y2="82" stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <!-- union arrow -->
+      <text x="390" y="100" fill="#FFC53D" font-size="15">union(3,6) ⇒</text>
+      <!-- merged -->
+      <circle cx="540" cy="50" r="20" fill="rgba(79,214,190,.18)" stroke="#4FD6BE" stroke-width="2.5"/><text x="540" y="56" fill="#4FD6BE">1</text>
+      <circle cx="480" cy="120" r="18" fill="none" stroke="#9DB4E5"/><text x="480" y="126" fill="#E8EEFB">2</text>
+      <circle cx="540" cy="120" r="18" fill="none" stroke="#9DB4E5"/><text x="540" y="126" fill="#E8EEFB">3</text>
+      <circle cx="610" cy="120" r="18" fill="rgba(255,138,122,.12)" stroke="#FF8A7A"/><text x="610" y="126" fill="#FF8A7A">5</text>
+      <circle cx="610" cy="185" r="18" fill="none" stroke="#9DB4E5"/><text x="610" y="191" fill="#E8EEFB">6</text>
+      <line x1="488" y1="106" x2="528" y2="68"  stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <line x1="540" y1="102" x2="540" y2="72"  stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <line x1="600" y1="106" x2="554" y2="64"  stroke="#FF8A7A" stroke-width="2" marker-end="url(#uf2)"/>
+      <line x1="610" y1="167" x2="610" y2="140" stroke="#9DB4E5" marker-end="url(#uf1)"/>
+      <text x="640" y="70" fill="#FF8A7A" font-size="11">root 5 now</text>
+      <text x="640" y="86" fill="#FF8A7A" font-size="11">points to 1</text>
+    </g>
+    <text x="40" y="218" fill="#9DB4E5" font-size="12">find(x): walk to root · path compression flattens it · union by rank keeps trees shallow</text>
+    <defs>
+      <marker id="uf1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9DB4E5"/></marker>
+      <marker id="uf2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8A7A"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">same root = same group · union = pointing one root at the other — that's the whole data structure</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — DSU with both optimizations</h3>
+  <pre><span class="k">class</span> <span class="f">DSU</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(self, n):
+        self.parent = list(range(n))    <span class="c"># everyone starts as their own root</span>
+        self.rank = [<span class="n">0</span>] * n             <span class="c"># tree-height upper bound</span>
+        self.components = n
+
+    <span class="k">def</span> <span class="f">find</span>(self, x):
+        <span class="k">while</span> self.parent[x] != x:
+            <span class="c"># path compression: grandparent hop flattens as we walk</span>
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        <span class="k">return</span> x
+
+    <span class="k">def</span> <span class="f">union</span>(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        <span class="k">if</span> ra == rb:
+            <span class="k">return</span> <span class="k">False</span>                <span class="c"># already connected — a cycle edge!</span>
+        <span class="k">if</span> self.rank[ra] &lt; self.rank[rb]:
+            ra, rb = rb, ra             <span class="c"># union by rank: small under big</span>
+        self.parent[rb] = ra
+        <span class="k">if</span> self.rank[ra] == self.rank[rb]:
+            self.rank[ra] += <span class="n">1</span>
+        self.components -= <span class="n">1</span>
+        <span class="k">return</span> <span class="k">True</span>
+
+
+<span class="k">def</span> <span class="f">find_redundant_connection</span>(edges):
+    <span class="c"># LC 684: the first edge whose union "fails" closes a cycle</span>
+    dsu = DSU(len(edges) + <span class="n">1</span>)
+    <span class="k">for</span> a, b <span class="k">in</span> edges:
+        <span class="k">if</span> <span class="k">not</span> dsu.union(a, b):
+            <span class="k">return</span> [a, b]</pre>
+  <div class="note"><b>Union-Find vs DFS:</b> if the graph is fully given up front, DFS counts components just fine. Reach for DSU when edges <em>arrive incrementally</em> or you must answer many connectivity queries interleaved with merges — say this trade-off out loud.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
+    <tr><td>547</td><td><a href="https://leetcode.com/problems/number-of-provinces/">Number of Provinces</a></td><td><span class="diff dm">Medium</span></td><td>Component counting, base form</td></tr>
+    <tr><td>684</td><td><a href="https://leetcode.com/problems/redundant-connection/">Redundant Connection</a></td><td><span class="diff dm">Medium</span></td><td>Cycle edge via failed union</td></tr>
+    <tr><td>721</td><td><a href="https://leetcode.com/problems/accounts-merge/">Accounts Merge</a></td><td><span class="diff dm">Medium</span></td><td>DSU over strings — very common SDE 2/3 screen</td></tr>
+    <tr><td>323</td><td><a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Number of Connected Components</a></td><td><span class="diff dm">Medium</span></td><td>DSU vs DFS comparison ground</td></tr>
+    <tr><td>128</td><td><a href="https://leetcode.com/problems/longest-consecutive-sequence/">Longest Consecutive Sequence</a></td><td><span class="diff dm">Medium</span></td><td>Set/DSU hybrid thinking</td></tr>
+    <tr><td>1971</td><td><a href="https://leetcode.com/problems/find-if-path-exists-in-graph/">Find if Path Exists in Graph</a></td><td><span class="diff de">Easy</span></td><td>Connectivity query warm-up</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ CHEAT SHEET ════════════════ -->
+<section class="pat" id="cheat" style="border-bottom:0">
+  <div class="titleblock">
+    <div class="num">◆</div>
+    <div class="name"><h2>One-Page Cheat Sheet</h2><p>Print this. Tape it to the wall. Re-derive everything else.</p></div>
+    <div class="meta"><span>coverage of typical loops</span><b>~90%</b></div>
+  </div>
+  <div class="viz" style="padding:8px 14px 14px">
+  <table class="cheat">
+    <tr><th>Pattern</th><th>Strongest trigger phrase</th><th>Core move</th><th>Complexity</th></tr>
+    <tr><td>01 Sliding Window</td><td>"longest/shortest contiguous … that satisfies X"</td><td>grow right, shrink left while invalid</td><td>O(n)</td></tr>
+    <tr><td>02 Two Pointers</td><td>"sorted array" + pair/triplet, in-place</td><td>converge from both ends, discard provably</td><td>O(n)</td></tr>
+    <tr><td>03 Fast &amp; Slow</td><td>"cycle", "middle of linked list"</td><td>×1 and ×2 runners must collide in a loop</td><td>O(n), O(1) sp</td></tr>
+    <tr><td>04 Merge Intervals</td><td>"overlapping intervals / meeting rooms"</td><td>sort by start, extend or append</td><td>O(n log n)</td></tr>
+    <tr><td>05 Binary Search</td><td>"minimum X such that…" / sorted / O(log n)</td><td>find first-true boundary of monotonic check</td><td>O(log n)·check</td></tr>
+    <tr><td>06 Monotonic Stack</td><td>"next greater/smaller element"</td><td>pop everything the newcomer beats</td><td>O(n)</td></tr>
+    <tr><td>07 Heap / Top-K</td><td>"k largest / most frequent / stream median"</td><td>size-k heap, root is the gatekeeper</td><td>O(n log k)</td></tr>
+    <tr><td>08 BFS</td><td>"shortest path / min steps (unweighted)"</td><td>queue by level, visit on enqueue</td><td>O(V+E)</td></tr>
+    <tr><td>09 DFS / Backtrack</td><td>"generate all…", "islands", n ≤ 20</td><td>choose → explore → un-choose, prune</td><td>O(bᵈ)</td></tr>
+    <tr><td>10 Dynamic Prog.</td><td>"count ways / max-min over choices"</td><td>state + recurrence + base + order</td><td>states·trans</td></tr>
+    <tr><td>11 Topological Sort</td><td>"prerequisites / build order"</td><td>Kahn's: peel in-degree-0 layer by layer</td><td>O(V+E)</td></tr>
+    <tr><td>12 Union-Find</td><td>"groups merging over time / connected?"</td><td>find roots, point one at the other</td><td>≈O(1)/op</td></tr>
+  </table>
+  </div>
+  <div class="note" style="margin-top:22px"><b>How to drill (SDE 2/3 cadence):</b> pick one pattern per day → read the visual until you can redraw it from memory → re-implement the template blind → solve the drill set's mediums in ≤ 25 min each, narrating triggers and complexity out loud. Revisit failed problems after 3 days, then 10. Recognition speed, not memorized solutions, is what these loops measure.</div>
+</section>
+
+<footer>DSA PATTERN BLUEPRINTS · drawn for SDE 2 / SDE 3 loops · revise, redraw, re-derive</footer>
+
+</main>
+</div>
+
+<script>
+// scroll-spy: highlight the pattern currently in view
+const links=[...document.querySelectorAll('nav.toc a')];
+const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){
+    links.forEach(a=>a.classList.remove('on'));
+    const a=map.get(e.target.id); if(a)a.classList.add('on');
+  }});
+},{rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('section.pat, header.hero').forEach(s=>{if(s.id)obs.observe(s)});
+</script>
+</body>
+</html>
