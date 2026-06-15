@@ -1,5 +1,7 @@
 # DSA Pattern Blueprints
 
+https://nish616.github.io/DSA-cheat-sheet/
+
 A comprehensive interview field guide for **SDE 2 / SDE 3 coding rounds**, featuring twelve battle-tested algorithmic patterns that cover ~90% of common interview problems.
 
 ## 📚 What's Inside
