@@ -104,6 +104,10 @@ table.lc a:hover{color:var(--amber);border-bottom-color:var(--amber)}
 .de{color:#7BE3A8;background:rgba(123,227,168,.12)}
 .dm{color:var(--amber);background:rgba(255,197,61,.12)}
 .dh{color:var(--coral);background:rgba(255,138,122,.12)}
+.freq{font:600 10px var(--mono);letter-spacing:.06em;padding:2px 7px;border-radius:3px;white-space:nowrap;text-transform:uppercase}
+.fh{color:#102046;background:var(--amber)}
+.fm{color:var(--teal);border:1px solid var(--teal);background:transparent}
+.fn{color:var(--muted);border:1px dashed var(--line);background:transparent}
 
 .note{border-left:3px solid var(--violet);background:rgba(183,166,255,.07);padding:12px 16px;border-radius:0 8px 8px 0;color:var(--muted);font-size:14px;margin-top:14px}
 .note b{color:var(--violet)}
@@ -136,6 +140,8 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
   <a href="#p10"><span class="no">10</span>Dynamic Programming</a>
   <a href="#p11"><span class="no">11</span>Topological Sort</a>
   <a href="#p12"><span class="no">12</span>Union-Find</a>
+  <a href="#p13"><span class="no">13</span>Prefix Sum</a>
+  <a href="#p14"><span class="no">14</span>Linked List Reversal</a>
   <a href="#cheat"><span class="no">◆</span>Cheat Sheet</a>
 </nav>
 
@@ -144,12 +150,18 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 <header class="hero">
   <span class="stamp">Field Guide · Rev 2026</span>
   <h1>DSA Pattern <em>Blueprints</em></h1>
-  <p class="sub">Twelve patterns that cover ~90% of SDE&nbsp;2 / SDE&nbsp;3 coding rounds. Each blueprint gives you the <strong style="color:var(--amber)">trigger words</strong> to recognize it in a problem statement, a visual model to reason with on the whiteboard, a commented reference implementation, and the highest-signal LeetCode problems to drill.</p>
+  <p class="sub">Fourteen patterns that cover ~90% of SDE&nbsp;2 / SDE&nbsp;3 coding rounds. Each blueprint gives you the <strong style="color:var(--amber)">trigger words</strong> to recognize it in a problem statement, a visual model to reason with on the whiteboard, a commented reference implementation, and the highest-signal LeetCode problems to drill — now tagged by how often they actually show up.</p>
   <div class="legend">
     <span><i class="dot" style="background:var(--amber)"></i>trigger keyword</span>
     <span><i class="dot" style="background:var(--teal)"></i>pointer / accepted</span>
     <span><i class="dot" style="background:var(--coral)"></i>pointer / rejected</span>
     <span><i class="dot" style="background:var(--violet)"></i>state being built</span>
+  </div>
+  <div class="legend" style="margin-top:10px">
+    <span style="color:var(--ink)">Freq tags:</span>
+    <span><span class="freq fh">High</span>&nbsp;asked constantly</span>
+    <span><span class="freq fm">Medium</span>&nbsp;shows up regularly</span>
+    <span><span class="freq fn">Niche</span>&nbsp;know it exists</span>
   </div>
 </header>
 
@@ -161,7 +173,7 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
     <div class="meta"><span>Recognition time</span><b>&lt; 60 seconds</b></div>
   </div>
   <div class="viz">
-  <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+  <svg viewBox="0 0 900 690" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
     <text x="20" y="28" fill="#9DB4E5" font-size="11" letter-spacing="2">SIGNAL IN PROBLEM STATEMENT</text>
     <text x="660" y="28" fill="#9DB4E5" font-size="11" letter-spacing="2">PATTERN</text>
     <g>
@@ -238,6 +250,18 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
       <line x1="560" y1="555" x2="650" y2="555" stroke="#4FD6BE" stroke-dasharray="4 4"/>
       <rect x="650" y="539" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
       <text x="664" y="560" fill="#4FD6BE">12 UNION-FIND</text>
+      <!-- 13 -->
+      <rect x="20" y="584" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="605" fill="#FFC53D">"sum of a subarray" · "count subarrays summing to k" · range sums</text>
+      <line x1="560" y1="600" x2="650" y2="600" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="584" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="605" fill="#4FD6BE">13 PREFIX SUM</text>
+      <!-- 14 -->
+      <rect x="20" y="629" width="540" height="32" rx="4" fill="rgba(255,197,61,.08)" stroke="rgba(255,197,61,.4)"/>
+      <text x="34" y="650" fill="#FFC53D">"reverse a linked list" · "in groups of k" · O(1) space relink</text>
+      <line x1="560" y1="645" x2="650" y2="645" stroke="#4FD6BE" stroke-dasharray="4 4"/>
+      <rect x="650" y="629" width="230" height="32" rx="4" fill="rgba(79,214,190,.1)" stroke="#4FD6BE"/>
+      <text x="664" y="650" fill="#4FD6BE">14 LIST REVERSAL</text>
     </g>
   </svg>
   <div class="cap">When two signals fire at once (e.g. "shortest" + "weighted"), the constraint section usually breaks the tie — check n and the time limit.</div>
@@ -325,13 +349,13 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>3</td><td><a target="_blank" href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">Longest Substring Without Repeating Characters</a></td><td><span class="diff dm">Medium</span></td><td>The canonical variable window</td></tr>
-    <tr><td>424</td><td><a target="_blank" href="https://leetcode.com/problems/longest-repeating-character-replacement/">Longest Repeating Character Replacement</a></td><td><span class="diff dm">Medium</span></td><td>Window validity via a budget (k replacements)</td></tr>
-    <tr><td>209</td><td><a target="_blank" href="https://leetcode.com/problems/minimum-size-subarray-sum/">Minimum Size Subarray Sum</a></td><td><span class="diff dm">Medium</span></td><td>Shortest-window flavor (shrink while valid)</td></tr>
-    <tr><td>567</td><td><a target="_blank" href="https://leetcode.com/problems/permutation-in-string/">Permutation in String</a></td><td><span class="diff dm">Medium</span></td><td>Fixed window + frequency map matching</td></tr>
-    <tr><td>76</td><td><a target="_blank" href="https://leetcode.com/problems/minimum-window-substring/">Minimum Window Substring</a></td><td><span class="diff dh">Hard</span></td><td>The SDE 2/3 classic — need/have counters</td></tr>
-    <tr><td>239</td><td><a target="_blank" href="https://leetcode.com/problems/sliding-window-maximum/">Sliding Window Maximum</a></td><td><span class="diff dh">Hard</span></td><td>Window + monotonic deque combo</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>3</td><td><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">Longest Substring Without Repeating Characters</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>The canonical variable window</td></tr>
+    <tr><td>424</td><td><a href="https://leetcode.com/problems/longest-repeating-character-replacement/">Longest Repeating Character Replacement</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Window validity via a budget (k replacements)</td></tr>
+    <tr><td>209</td><td><a href="https://leetcode.com/problems/minimum-size-subarray-sum/">Minimum Size Subarray Sum</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Shortest-window flavor (shrink while valid)</td></tr>
+    <tr><td>567</td><td><a href="https://leetcode.com/problems/permutation-in-string/">Permutation in String</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Fixed window + frequency map matching</td></tr>
+    <tr><td>76</td><td><a href="https://leetcode.com/problems/minimum-window-substring/">Minimum Window Substring</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fh">High</span></td><td>The SDE 2/3 classic — need/have counters</td></tr>
+    <tr><td>239</td><td><a href="https://leetcode.com/problems/sliding-window-maximum/">Sliding Window Maximum</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Window + monotonic deque combo</td></tr>
   </table>
 </section>
 
@@ -421,13 +445,13 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>125</td><td><a target="_blank" href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome</a></td><td><span class="diff de">Easy</span></td><td>Converging pointers, base form</td></tr>
-    <tr><td>167</td><td><a target="_blank" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">Two Sum II — Sorted</a></td><td><span class="diff dm">Medium</span></td><td>The discard argument in pure form</td></tr>
-    <tr><td>15</td><td><a target="_blank" href="https://leetcode.com/problems/3sum/">3Sum</a></td><td><span class="diff dm">Medium</span></td><td>Anchor + pointers, dedupe handling</td></tr>
-    <tr><td>11</td><td><a target="_blank" href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></td><td><span class="diff dm">Medium</span></td><td>Move the limiting side — greedy proof</td></tr>
-    <tr><td>283</td><td><a target="_blank" href="https://leetcode.com/problems/move-zeroes/">Move Zeroes</a></td><td><span class="diff de">Easy</span></td><td>Same-direction reader/writer pointers</td></tr>
-    <tr><td>42</td><td><a target="_blank" href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></td><td><span class="diff dh">Hard</span></td><td>Frequent SDE 3 screen — track maxes from both ends</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>125</td><td><a href="https://leetcode.com/problems/valid-palindrome/">Valid Palindrome</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>Converging pointers, base form</td></tr>
+    <tr><td>167</td><td><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">Two Sum II — Sorted</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>The discard argument in pure form</td></tr>
+    <tr><td>15</td><td><a href="https://leetcode.com/problems/3sum/">3Sum</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Anchor + pointers, dedupe handling</td></tr>
+    <tr><td>11</td><td><a href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Move the limiting side — greedy proof</td></tr>
+    <tr><td>283</td><td><a href="https://leetcode.com/problems/move-zeroes/">Move Zeroes</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>Same-direction reader/writer pointers</td></tr>
+    <tr><td>42</td><td><a href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fh">High</span></td><td>Frequent SDE 3 screen — track maxes from both ends</td></tr>
   </table>
 </section>
 
@@ -522,13 +546,14 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>141</td><td><a target="_blank" href="https://leetcode.com/problems/linked-list-cycle/">Linked List Cycle</a></td><td><span class="diff de">Easy</span></td><td>Phase-1 base case</td></tr>
-    <tr><td>876</td><td><a target="_blank" href="https://leetcode.com/problems/middle-of-the-linked-list/">Middle of the Linked List</a></td><td><span class="diff de">Easy</span></td><td>Half-speed trick, used inside harder problems</td></tr>
-    <tr><td>142</td><td><a target="_blank" href="https://leetcode.com/problems/linked-list-cycle-ii/">Linked List Cycle II</a></td><td><span class="diff dm">Medium</span></td><td>Phase-2 math — be ready to prove it</td></tr>
-    <tr><td>202</td><td><a target="_blank" href="https://leetcode.com/problems/happy-number/">Happy Number</a></td><td><span class="diff de">Easy</span></td><td>Cycle detection on an implicit sequence</td></tr>
-    <tr><td>287</td><td><a target="_blank" href="https://leetcode.com/problems/find-the-duplicate-number/">Find the Duplicate Number</a></td><td><span class="diff dm">Medium</span></td><td>Array-as-linked-list reduction</td></tr>
-    <tr><td>143</td><td><a target="_blank" href="https://leetcode.com/problems/reorder-list/">Reorder List</a></td><td><span class="diff dm">Medium</span></td><td>Middle + reverse + merge, multi-step composition</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>141</td><td><a href="https://leetcode.com/problems/linked-list-cycle/">Linked List Cycle</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fh">High</span></td><td>Phase-1 base case</td></tr>
+    <tr><td>876</td><td><a href="https://leetcode.com/problems/middle-of-the-linked-list/">Middle of the Linked List</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>Half-speed trick, used inside harder problems</td></tr>
+    <tr><td>142</td><td><a href="https://leetcode.com/problems/linked-list-cycle-ii/">Linked List Cycle II</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Phase-2 math — be ready to prove it</td></tr>
+    <tr><td>19</td><td><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">Remove Nth Node From End of List</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Gap-of-n two-pointer — very common screen</td></tr>
+    <tr><td>202</td><td><a href="https://leetcode.com/problems/happy-number/">Happy Number</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fn">Niche</span></td><td>Cycle detection on an implicit sequence</td></tr>
+    <tr><td>287</td><td><a href="https://leetcode.com/problems/find-the-duplicate-number/">Find the Duplicate Number</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Array-as-linked-list reduction</td></tr>
+    <tr><td>143</td><td><a href="https://leetcode.com/problems/reorder-list/">Reorder List</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Middle + reverse + merge, multi-step composition</td></tr>
   </table>
 </section>
 
@@ -598,13 +623,13 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>56</td><td><a target="_blank" href="https://leetcode.com/problems/merge-intervals/">Merge Intervals</a></td><td><span class="diff dm">Medium</span></td><td>The base template</td></tr>
-    <tr><td>57</td><td><a target="_blank" href="https://leetcode.com/problems/insert-interval/">Insert Interval</a></td><td><span class="diff dm">Medium</span></td><td>Before / overlap / after three-phase scan</td></tr>
-    <tr><td>435</td><td><a target="_blank" href="https://leetcode.com/problems/non-overlapping-intervals/">Non-overlapping Intervals</a></td><td><span class="diff dm">Medium</span></td><td>Greedy: sort by END to keep the most</td></tr>
-    <tr><td>253</td><td><a target="_blank" href="https://leetcode.com/problems/meeting-rooms-ii/">Meeting Rooms II</a></td><td><span class="diff dm">Medium</span></td><td>Sweep line / min-heap — extremely common SDE 2 screen</td></tr>
-    <tr><td>986</td><td><a target="_blank" href="https://leetcode.com/problems/interval-list-intersections/">Interval List Intersections</a></td><td><span class="diff dm">Medium</span></td><td>Two-pointer over two interval lists</td></tr>
-    <tr><td>1851</td><td><a target="_blank" href="https://leetcode.com/problems/minimum-interval-to-include-each-query/">Minimum Interval to Include Each Query</a></td><td><span class="diff dh">Hard</span></td><td>Intervals + heap + offline queries (SDE 3)</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>56</td><td><a href="https://leetcode.com/problems/merge-intervals/">Merge Intervals</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>The base template</td></tr>
+    <tr><td>57</td><td><a href="https://leetcode.com/problems/insert-interval/">Insert Interval</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Before / overlap / after three-phase scan</td></tr>
+    <tr><td>435</td><td><a href="https://leetcode.com/problems/non-overlapping-intervals/">Non-overlapping Intervals</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Greedy: sort by END to keep the most</td></tr>
+    <tr><td>253</td><td><a href="https://leetcode.com/problems/meeting-rooms-ii/">Meeting Rooms II</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Sweep line / min-heap — extremely common SDE 2 screen</td></tr>
+    <tr><td>986</td><td><a href="https://leetcode.com/problems/interval-list-intersections/">Interval List Intersections</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Two-pointer over two interval lists</td></tr>
+    <tr><td>1851</td><td><a href="https://leetcode.com/problems/minimum-interval-to-include-each-query/">Minimum Interval to Include Each Query</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fn">Niche</span></td><td>Intervals + heap + offline queries (SDE 3)</td></tr>
   </table>
 </section>
 
@@ -688,14 +713,15 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>704</td><td><a target="_blank" href="https://leetcode.com/problems/binary-search/">Binary Search</a></td><td><span class="diff de">Easy</span></td><td>Get the invariants automatic</td></tr>
-    <tr><td>33</td><td><a target="_blank" href="https://leetcode.com/problems/search-in-rotated-sorted-array/">Search in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td>Reasoning about which half is sorted</td></tr>
-    <tr><td>153</td><td><a target="_blank" href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">Find Minimum in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td>Boundary form of the rotation idea</td></tr>
-    <tr><td>875</td><td><a target="_blank" href="https://leetcode.com/problems/koko-eating-bananas/">Koko Eating Bananas</a></td><td><span class="diff dm">Medium</span></td><td>Search-on-answer entry point</td></tr>
-    <tr><td>1011</td><td><a target="_blank" href="https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/">Capacity to Ship Packages in D Days</a></td><td><span class="diff dm">Medium</span></td><td>Minimize-the-max, greedy check</td></tr>
-    <tr><td>410</td><td><a target="_blank" href="https://leetcode.com/problems/split-array-largest-sum/">Split Array Largest Sum</a></td><td><span class="diff dh">Hard</span></td><td>Same idea, harder framing (SDE 3)</td></tr>
-    <tr><td>4</td><td><a target="_blank" href="https://leetcode.com/problems/median-of-two-sorted-arrays/">Median of Two Sorted Arrays</a></td><td><span class="diff dh">Hard</span></td><td>Partition binary search — classic hard screen</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>704</td><td><a href="https://leetcode.com/problems/binary-search/">Binary Search</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>Get the invariants automatic</td></tr>
+    <tr><td>34</td><td><a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/">Find First and Last Position</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>First-true / last-true boundary template</td></tr>
+    <tr><td>33</td><td><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">Search in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Reasoning about which half is sorted</td></tr>
+    <tr><td>153</td><td><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">Find Minimum in Rotated Sorted Array</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Boundary form of the rotation idea</td></tr>
+    <tr><td>875</td><td><a href="https://leetcode.com/problems/koko-eating-bananas/">Koko Eating Bananas</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Search-on-answer entry point</td></tr>
+    <tr><td>1011</td><td><a href="https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/">Capacity to Ship Packages in D Days</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Minimize-the-max, greedy check</td></tr>
+    <tr><td>410</td><td><a href="https://leetcode.com/problems/split-array-largest-sum/">Split Array Largest Sum</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fn">Niche</span></td><td>Same idea, harder framing (SDE 3)</td></tr>
+    <tr><td>4</td><td><a href="https://leetcode.com/problems/median-of-two-sorted-arrays/">Median of Two Sorted Arrays</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Partition binary search — classic hard screen</td></tr>
   </table>
 </section>
 
@@ -773,13 +799,14 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>496</td><td><a target="_blank" href="https://leetcode.com/problems/next-greater-element-i/">Next Greater Element I</a></td><td><span class="diff de">Easy</span></td><td>Pure template form</td></tr>
-    <tr><td>739</td><td><a target="_blank" href="https://leetcode.com/problems/daily-temperatures/">Daily Temperatures</a></td><td><span class="diff dm">Medium</span></td><td>Most common interview phrasing</td></tr>
-    <tr><td>901</td><td><a target="_blank" href="https://leetcode.com/problems/online-stock-span/">Online Stock Span</a></td><td><span class="diff dm">Medium</span></td><td>Streaming / previous-greater flavor</td></tr>
-    <tr><td>84</td><td><a target="_blank" href="https://leetcode.com/problems/largest-rectangle-in-histogram/">Largest Rectangle in Histogram</a></td><td><span class="diff dh">Hard</span></td><td>The boss fight — left/right wall reasoning</td></tr>
-    <tr><td>85</td><td><a target="_blank" href="https://leetcode.com/problems/maximal-rectangle/">Maximal Rectangle</a></td><td><span class="diff dh">Hard</span></td><td>LC 84 applied row by row (SDE 3)</td></tr>
-    <tr><td>402</td><td><a target="_blank" href="https://leetcode.com/problems/remove-k-digits/">Remove K Digits</a></td><td><span class="diff dm">Medium</span></td><td>Greedy + monotonic stack hybrid</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>496</td><td><a href="https://leetcode.com/problems/next-greater-element-i/">Next Greater Element I</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>Pure template form</td></tr>
+    <tr><td>739</td><td><a href="https://leetcode.com/problems/daily-temperatures/">Daily Temperatures</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Most common interview phrasing</td></tr>
+    <tr><td>503</td><td><a href="https://leetcode.com/problems/next-greater-element-ii/">Next Greater Element II</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Circular array twist (mod indexing)</td></tr>
+    <tr><td>901</td><td><a href="https://leetcode.com/problems/online-stock-span/">Online Stock Span</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Streaming / previous-greater flavor</td></tr>
+    <tr><td>84</td><td><a href="https://leetcode.com/problems/largest-rectangle-in-histogram/">Largest Rectangle in Histogram</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>The boss fight — left/right wall reasoning</td></tr>
+    <tr><td>85</td><td><a href="https://leetcode.com/problems/maximal-rectangle/">Maximal Rectangle</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fn">Niche</span></td><td>LC 84 applied row by row (SDE 3)</td></tr>
+    <tr><td>402</td><td><a href="https://leetcode.com/problems/remove-k-digits/">Remove K Digits</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Greedy + monotonic stack hybrid</td></tr>
   </table>
 </section>
 
@@ -861,13 +888,13 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>215</td><td><a target="_blank" href="https://leetcode.com/problems/kth-largest-element-in-an-array/">Kth Largest Element in an Array</a></td><td><span class="diff dm">Medium</span></td><td>Heap vs quickselect discussion</td></tr>
-    <tr><td>347</td><td><a target="_blank" href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent Elements</a></td><td><span class="diff dm">Medium</span></td><td>Count + heap (or bucket sort follow-up)</td></tr>
-    <tr><td>973</td><td><a target="_blank" href="https://leetcode.com/problems/k-closest-points-to-origin/">K Closest Points to Origin</a></td><td><span class="diff dm">Medium</span></td><td>Max-heap of size k on distance</td></tr>
-    <tr><td>23</td><td><a target="_blank" href="https://leetcode.com/problems/merge-k-sorted-lists/">Merge k Sorted Lists</a></td><td><span class="diff dh">Hard</span></td><td>Heap of list heads — classic SDE 2 screen</td></tr>
-    <tr><td>295</td><td><a target="_blank" href="https://leetcode.com/problems/find-median-from-data-stream/">Find Median from Data Stream</a></td><td><span class="diff dh">Hard</span></td><td>Two-heap invariant design</td></tr>
-    <tr><td>621</td><td><a target="_blank" href="https://leetcode.com/problems/task-scheduler/">Task Scheduler</a></td><td><span class="diff dm">Medium</span></td><td>Heap + greedy simulation</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>215</td><td><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/">Kth Largest Element in an Array</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Heap vs quickselect discussion</td></tr>
+    <tr><td>347</td><td><a href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent Elements</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Count + heap (or bucket sort follow-up)</td></tr>
+    <tr><td>973</td><td><a href="https://leetcode.com/problems/k-closest-points-to-origin/">K Closest Points to Origin</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Max-heap of size k on distance</td></tr>
+    <tr><td>23</td><td><a href="https://leetcode.com/problems/merge-k-sorted-lists/">Merge k Sorted Lists</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fh">High</span></td><td>Heap of list heads — classic SDE 2 screen</td></tr>
+    <tr><td>295</td><td><a href="https://leetcode.com/problems/find-median-from-data-stream/">Find Median from Data Stream</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Two-heap invariant design</td></tr>
+    <tr><td>621</td><td><a href="https://leetcode.com/problems/task-scheduler/">Task Scheduler</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Heap + greedy simulation</td></tr>
   </table>
 </section>
 
@@ -953,13 +980,13 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>102</td><td><a target="_blank" href="https://leetcode.com/problems/binary-tree-level-order-traversal/">Binary Tree Level Order Traversal</a></td><td><span class="diff dm">Medium</span></td><td>Level-by-level queue mechanics</td></tr>
-    <tr><td>994</td><td><a target="_blank" href="https://leetcode.com/problems/rotting-oranges/">Rotting Oranges</a></td><td><span class="diff dm">Medium</span></td><td>Multi-source BFS — very frequent</td></tr>
-    <tr><td>542</td><td><a target="_blank" href="https://leetcode.com/problems/01-matrix/">01 Matrix</a></td><td><span class="diff dm">Medium</span></td><td>Start BFS from targets, not sources</td></tr>
-    <tr><td>1091</td><td><a target="_blank" href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">Shortest Path in Binary Matrix</a></td><td><span class="diff dm">Medium</span></td><td>8-directional shortest path</td></tr>
-    <tr><td>127</td><td><a target="_blank" href="https://leetcode.com/problems/word-ladder/">Word Ladder</a></td><td><span class="diff dh">Hard</span></td><td>BFS over an implicit graph of words</td></tr>
-    <tr><td>752</td><td><a target="_blank" href="https://leetcode.com/problems/open-the-lock/">Open the Lock</a></td><td><span class="diff dm">Medium</span></td><td>State-space BFS (states = nodes)</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>102</td><td><a href="https://leetcode.com/problems/binary-tree-level-order-traversal/">Binary Tree Level Order Traversal</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Level-by-level queue mechanics</td></tr>
+    <tr><td>994</td><td><a href="https://leetcode.com/problems/rotting-oranges/">Rotting Oranges</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Multi-source BFS — very frequent</td></tr>
+    <tr><td>542</td><td><a href="https://leetcode.com/problems/01-matrix/">01 Matrix</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Start BFS from targets, not sources</td></tr>
+    <tr><td>1091</td><td><a href="https://leetcode.com/problems/shortest-path-in-binary-matrix/">Shortest Path in Binary Matrix</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>8-directional shortest path</td></tr>
+    <tr><td>127</td><td><a href="https://leetcode.com/problems/word-ladder/">Word Ladder</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>BFS over an implicit graph of words</td></tr>
+    <tr><td>752</td><td><a href="https://leetcode.com/problems/open-the-lock/">Open the Lock</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fn">Niche</span></td><td>State-space BFS (states = nodes)</td></tr>
   </table>
 </section>
 
@@ -1051,14 +1078,15 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>78</td><td><a target="_blank" href="https://leetcode.com/problems/subsets/">Subsets</a></td><td><span class="diff dm">Medium</span></td><td>The skeleton, undecorated</td></tr>
-    <tr><td>46</td><td><a target="_blank" href="https://leetcode.com/problems/permutations/">Permutations</a></td><td><span class="diff dm">Medium</span></td><td>Used-set variant</td></tr>
-    <tr><td>39</td><td><a target="_blank" href="https://leetcode.com/problems/combination-sum/">Combination Sum</a></td><td><span class="diff dm">Medium</span></td><td>Reuse-allowed recursion index</td></tr>
-    <tr><td>79</td><td><a target="_blank" href="https://leetcode.com/problems/word-search/">Word Search</a></td><td><span class="diff dm">Medium</span></td><td>Backtracking on a grid, mark/unmark</td></tr>
-    <tr><td>200</td><td><a target="_blank" href="https://leetcode.com/problems/number-of-islands/">Number of Islands</a></td><td><span class="diff dm">Medium</span></td><td>Possibly the most-asked question in industry</td></tr>
-    <tr><td>51</td><td><a target="_blank" href="https://leetcode.com/problems/n-queens/">N-Queens</a></td><td><span class="diff dh">Hard</span></td><td>Constraint propagation + pruning</td></tr>
-    <tr><td>131</td><td><a target="_blank" href="https://leetcode.com/problems/palindrome-partitioning/">Palindrome Partitioning</a></td><td><span class="diff dm">Medium</span></td><td>Partition-style branching</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>78</td><td><a href="https://leetcode.com/problems/subsets/">Subsets</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>The skeleton, undecorated</td></tr>
+    <tr><td>46</td><td><a href="https://leetcode.com/problems/permutations/">Permutations</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Used-set variant</td></tr>
+    <tr><td>39</td><td><a href="https://leetcode.com/problems/combination-sum/">Combination Sum</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Reuse-allowed recursion index</td></tr>
+    <tr><td>79</td><td><a href="https://leetcode.com/problems/word-search/">Word Search</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Backtracking on a grid, mark/unmark</td></tr>
+    <tr><td>200</td><td><a href="https://leetcode.com/problems/number-of-islands/">Number of Islands</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Possibly the most-asked question in industry</td></tr>
+    <tr><td>417</td><td><a href="https://leetcode.com/problems/pacific-atlantic-water-flow/">Pacific Atlantic Water Flow</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Reverse-flood from two borders</td></tr>
+    <tr><td>51</td><td><a href="https://leetcode.com/problems/n-queens/">N-Queens</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Constraint propagation + pruning</td></tr>
+    <tr><td>131</td><td><a href="https://leetcode.com/problems/palindrome-partitioning/">Palindrome Partitioning</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Partition-style branching</td></tr>
   </table>
 </section>
 
@@ -1144,15 +1172,15 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>70</td><td><a target="_blank" href="https://leetcode.com/problems/climbing-stairs/">Climbing Stairs</a></td><td><span class="diff de">Easy</span></td><td>Recurrence-spotting warm-up</td></tr>
-    <tr><td>198</td><td><a target="_blank" href="https://leetcode.com/problems/house-robber/">House Robber</a></td><td><span class="diff dm">Medium</span></td><td>Take/skip decision DP</td></tr>
-    <tr><td>322</td><td><a target="_blank" href="https://leetcode.com/problems/coin-change/">Coin Change</a></td><td><span class="diff dm">Medium</span></td><td>Unbounded knapsack, min-cost form</td></tr>
-    <tr><td>416</td><td><a target="_blank" href="https://leetcode.com/problems/partition-equal-subset-sum/">Partition Equal Subset Sum</a></td><td><span class="diff dm">Medium</span></td><td>0/1 knapsack, reverse iteration</td></tr>
-    <tr><td>300</td><td><a target="_blank" href="https://leetcode.com/problems/longest-increasing-subsequence/">Longest Increasing Subsequence</a></td><td><span class="diff dm">Medium</span></td><td>O(n²) → O(n log n) follow-up</td></tr>
-    <tr><td>1143</td><td><a target="_blank" href="https://leetcode.com/problems/longest-common-subsequence/">Longest Common Subsequence</a></td><td><span class="diff dm">Medium</span></td><td>2D grid-of-strings archetype</td></tr>
-    <tr><td>72</td><td><a target="_blank" href="https://leetcode.com/problems/edit-distance/">Edit Distance</a></td><td><span class="diff dh">Hard</span></td><td>Three-way transition reasoning</td></tr>
-    <tr><td>62</td><td><a target="_blank" href="https://leetcode.com/problems/unique-paths/">Unique Paths</a></td><td><span class="diff dm">Medium</span></td><td>Grid path counting base case</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>70</td><td><a href="https://leetcode.com/problems/climbing-stairs/">Climbing Stairs</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fh">High</span></td><td>Recurrence-spotting warm-up</td></tr>
+    <tr><td>198</td><td><a href="https://leetcode.com/problems/house-robber/">House Robber</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Take/skip decision DP</td></tr>
+    <tr><td>322</td><td><a href="https://leetcode.com/problems/coin-change/">Coin Change</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Unbounded knapsack, min-cost form</td></tr>
+    <tr><td>416</td><td><a href="https://leetcode.com/problems/partition-equal-subset-sum/">Partition Equal Subset Sum</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>0/1 knapsack, reverse iteration</td></tr>
+    <tr><td>300</td><td><a href="https://leetcode.com/problems/longest-increasing-subsequence/">Longest Increasing Subsequence</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>O(n²) → O(n log n) follow-up</td></tr>
+    <tr><td>1143</td><td><a href="https://leetcode.com/problems/longest-common-subsequence/">Longest Common Subsequence</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>2D grid-of-strings archetype</td></tr>
+    <tr><td>72</td><td><a href="https://leetcode.com/problems/edit-distance/">Edit Distance</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Three-way transition reasoning</td></tr>
+    <tr><td>62</td><td><a href="https://leetcode.com/problems/unique-paths/">Unique Paths</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Grid path counting base case</td></tr>
   </table>
 </section>
 
@@ -1231,12 +1259,12 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>207</td><td><a target="_blank" href="https://leetcode.com/problems/course-schedule/">Course Schedule</a></td><td><span class="diff dm">Medium</span></td><td>Cycle detection via Kahn's</td></tr>
-    <tr><td>210</td><td><a target="_blank" href="https://leetcode.com/problems/course-schedule-ii/">Course Schedule II</a></td><td><span class="diff dm">Medium</span></td><td>Produce the actual ordering</td></tr>
-    <tr><td>269</td><td><a target="_blank" href="https://leetcode.com/problems/alien-dictionary/">Alien Dictionary</a></td><td><span class="diff dh">Hard</span></td><td>Build the graph yourself first (SDE 3 favorite)</td></tr>
-    <tr><td>310</td><td><a target="_blank" href="https://leetcode.com/problems/minimum-height-trees/">Minimum Height Trees</a></td><td><span class="diff dm">Medium</span></td><td>Peel leaves — topo-sort thinking on trees</td></tr>
-    <tr><td>2115</td><td><a target="_blank" href="https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/">Find All Possible Recipes</a></td><td><span class="diff dm">Medium</span></td><td>Modern phrasing of dependency resolution</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>207</td><td><a href="https://leetcode.com/problems/course-schedule/">Course Schedule</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Cycle detection via Kahn's</td></tr>
+    <tr><td>210</td><td><a href="https://leetcode.com/problems/course-schedule-ii/">Course Schedule II</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Produce the actual ordering</td></tr>
+    <tr><td>269</td><td><a href="https://leetcode.com/problems/alien-dictionary/">Alien Dictionary</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Build the graph yourself first (SDE 3 favorite)</td></tr>
+    <tr><td>310</td><td><a href="https://leetcode.com/problems/minimum-height-trees/">Minimum Height Trees</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fn">Niche</span></td><td>Peel leaves — topo-sort thinking on trees</td></tr>
+    <tr><td>2115</td><td><a href="https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/">Find All Possible Recipes</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fn">Niche</span></td><td>Modern phrasing of dependency resolution</td></tr>
   </table>
 </section>
 
@@ -1333,13 +1361,195 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
 
   <h3 class="sec">Drill set</h3>
   <table class="lc">
-    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Why it matters</th></tr>
-    <tr><td>547</td><td><a target="_blank" href="https://leetcode.com/problems/number-of-provinces/">Number of Provinces</a></td><td><span class="diff dm">Medium</span></td><td>Component counting, base form</td></tr>
-    <tr><td>684</td><td><a target="_blank" href="https://leetcode.com/problems/redundant-connection/">Redundant Connection</a></td><td><span class="diff dm">Medium</span></td><td>Cycle edge via failed union</td></tr>
-    <tr><td>721</td><td><a target="_blank" href="https://leetcode.com/problems/accounts-merge/">Accounts Merge</a></td><td><span class="diff dm">Medium</span></td><td>DSU over strings — very common SDE 2/3 screen</td></tr>
-    <tr><td>323</td><td><a target="_blank" href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Number of Connected Components</a></td><td><span class="diff dm">Medium</span></td><td>DSU vs DFS comparison ground</td></tr>
-    <tr><td>128</td><td><a target="_blank" href="https://leetcode.com/problems/longest-consecutive-sequence/">Longest Consecutive Sequence</a></td><td><span class="diff dm">Medium</span></td><td>Set/DSU hybrid thinking</td></tr>
-    <tr><td>1971</td><td><a target="_blank" href="https://leetcode.com/problems/find-if-path-exists-in-graph/">Find if Path Exists in Graph</a></td><td><span class="diff de">Easy</span></td><td>Connectivity query warm-up</td></tr>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>547</td><td><a href="https://leetcode.com/problems/number-of-provinces/">Number of Provinces</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Component counting, base form</td></tr>
+    <tr><td>684</td><td><a href="https://leetcode.com/problems/redundant-connection/">Redundant Connection</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Cycle edge via failed union</td></tr>
+    <tr><td>721</td><td><a href="https://leetcode.com/problems/accounts-merge/">Accounts Merge</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>DSU over strings — very common SDE 2/3 screen</td></tr>
+    <tr><td>323</td><td><a href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/">Number of Connected Components</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>DSU vs DFS comparison ground</td></tr>
+    <tr><td>128</td><td><a href="https://leetcode.com/problems/longest-consecutive-sequence/">Longest Consecutive Sequence</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Set/DSU hybrid thinking</td></tr>
+    <tr><td>1971</td><td><a href="https://leetcode.com/problems/find-if-path-exists-in-graph/">Find if Path Exists in Graph</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fn">Niche</span></td><td>Connectivity query warm-up</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 13 PREFIX SUM ════════════════ -->
+<section class="pat" id="p13">
+  <div class="titleblock">
+    <div class="num">13</div>
+    <div class="name"><h2>Prefix Sum</h2><p>Precompute cumulative totals once, then answer any range-sum query in O(1).</p></div>
+    <div class="meta"><span>Build <b>O(n)</b> · Query <b>O(1)</b></span><span>vs re-summing <b>O(n)</b>/query</span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>sum of a subarray</b> / range sum</span>
+    <span class="kw">many <b>repeated queries</b> over ranges</span>
+    <span class="kw">count subarrays that <b>sum to k</b></span>
+    <span class="kw"><b>divisible by k</b> / equal 0s and 1s</span>
+    <span class="kw">running total · <b>balance over time</b></span>
+    <span class="antikw">✗ if the array mutates a lot → Fenwick/segment tree</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <text x="40" y="28" fill="#9DB4E5" font-size="12">prefix[i] = sum of everything up to index i</text>
+    <g text-anchor="middle">
+      <text x="40" y="64" fill="#9DB4E5" font-size="11" text-anchor="start">nums</text>
+      <rect x="120" y="48" width="64" height="36" fill="none" stroke="rgba(157,180,229,.4)"/><text x="152" y="71" fill="#E8EEFB">2</text>
+      <rect x="184" y="48" width="64" height="36" fill="none" stroke="rgba(157,180,229,.4)"/><text x="216" y="71" fill="#E8EEFB">4</text>
+      <rect x="248" y="48" width="64" height="36" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="280" y="71" fill="#4FD6BE">1</text>
+      <rect x="312" y="48" width="64" height="36" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="344" y="71" fill="#4FD6BE">3</text>
+      <rect x="376" y="48" width="64" height="36" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="408" y="71" fill="#4FD6BE">5</text>
+      <rect x="440" y="48" width="64" height="36" fill="none" stroke="rgba(157,180,229,.4)"/><text x="472" y="71" fill="#E8EEFB">2</text>
+      <text x="40" y="124" fill="#9DB4E5" font-size="11" text-anchor="start">prefix</text>
+      <rect x="56"  y="108" width="64" height="36" fill="rgba(255,197,61,.1)" stroke="rgba(255,197,61,.4)"/><text x="88" y="131" fill="#FFC53D">0</text>
+      <rect x="120" y="108" width="64" height="36" fill="rgba(255,197,61,.1)" stroke="rgba(255,197,61,.4)"/><text x="152" y="131" fill="#FFC53D">2</text>
+      <rect x="184" y="108" width="64" height="36" fill="rgba(255,197,61,.1)" stroke="rgba(255,197,61,.4)"/><text x="216" y="131" fill="#FFC53D">6</text>
+      <rect x="248" y="108" width="64" height="36" fill="rgba(255,197,61,.22)" stroke="#FFC53D" stroke-width="2"/><text x="280" y="131" fill="#FFC53D">7</text>
+      <rect x="312" y="108" width="64" height="36" fill="rgba(255,197,61,.1)" stroke="rgba(255,197,61,.4)"/><text x="344" y="131" fill="#FFC53D">10</text>
+      <rect x="376" y="108" width="64" height="36" fill="rgba(255,197,61,.1)" stroke="rgba(255,197,61,.4)"/><text x="408" y="131" fill="#FFC53D">13</text>
+      <rect x="440" y="108" width="64" height="36" fill="rgba(255,197,61,.22)" stroke="#FFC53D" stroke-width="2"/><text x="472" y="131" fill="#FFC53D">18</text>
+    </g>
+    <path d="M 280 150 V 168 H 472 V 150" stroke="#4FD6BE" stroke-width="1.5" fill="none"/>
+    <text x="376" y="192" fill="#4FD6BE" font-size="12" text-anchor="middle">sum(nums[2..4]) = prefix[5] − prefix[2] = 18 − 7 = 11</text>
+    <text x="540" y="64" fill="#9DB4E5" font-size="11">note the leading 0:</text>
+    <text x="540" y="82" fill="#E8EEFB" font-size="11">prefix has n+1 slots</text>
+    <text x="540" y="100" fill="#E8EEFB" font-size="11">so i=0 needs no</text>
+    <text x="540" y="118" fill="#E8EEFB" font-size="11">special case</text>
+    <text x="540" y="148" fill="#9DB4E5" font-size="11">(prefix sits shifted</text>
+    <text x="540" y="166" fill="#9DB4E5" font-size="11">one half-cell left)</text>
+  </svg>
+  <div class="cap">one subtraction replaces a whole loop · the "sum to k" trick stores prefix counts in a hashmap as you go</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — range query &amp; the hashmap variant</h3>
+  <pre><span class="k">class</span> <span class="f">NumArray</span>:
+    <span class="c"># LC 303: build once, answer unlimited range-sum queries in O(1)</span>
+    <span class="k">def</span> <span class="f">__init__</span>(self, nums):
+        self.prefix = [<span class="n">0</span>]              <span class="c"># leading 0 removes edge cases</span>
+        <span class="k">for</span> x <span class="k">in</span> nums:
+            self.prefix.append(self.prefix[-<span class="n">1</span>] + x)
+
+    <span class="k">def</span> <span class="f">sumRange</span>(self, i, j):
+        <span class="c"># sum of nums[i..j] inclusive</span>
+        <span class="k">return</span> self.prefix[j + <span class="n">1</span>] - self.prefix[i]
+
+
+<span class="k">def</span> <span class="f">subarray_sum_equals_k</span>(nums, k):
+    <span class="c"># LC 560: count subarrays summing to k — the must-know variant</span>
+    <span class="c"># key insight: a subarray sums to k  ⟺  running − k seen before</span>
+    <span class="k">from</span> collections <span class="k">import</span> defaultdict
+    count = running = <span class="n">0</span>
+    seen = defaultdict(int)
+    seen[<span class="n">0</span>] = <span class="n">1</span>                        <span class="c"># empty prefix: one way to make sum 0</span>
+
+    <span class="k">for</span> x <span class="k">in</span> nums:
+        running += x
+        count += seen[running - k]     <span class="c"># how many earlier prefixes complete a k-sum?</span>
+        seen[running] += <span class="n">1</span>            <span class="c"># record this prefix for future indices</span>
+    <span class="k">return</span> count</pre>
+  <div class="note"><b>The pattern hides in disguises:</b> "binary subarray with equal 0s and 1s" (map 0→−1), "subarray divisible by k" (store <code>running % k</code>), "find pivot index" — all the same prefix machinery. Recognizing a sum/balance question as prefix-sum is the whole skill. The hashmap variant (LC 560) is the single most common form in real interviews.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>303</td><td><a href="https://leetcode.com/problems/range-sum-query-immutable/">Range Sum Query — Immutable</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fm">Medium</span></td><td>The base build + query</td></tr>
+    <tr><td>560</td><td><a href="https://leetcode.com/problems/subarray-sum-equals-k/">Subarray Sum Equals K</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Hashmap prefix — asked constantly</td></tr>
+    <tr><td>523</td><td><a href="https://leetcode.com/problems/continuous-subarray-sum/">Continuous Subarray Sum</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Prefix modulo k variant</td></tr>
+    <tr><td>525</td><td><a href="https://leetcode.com/problems/contiguous-array/">Contiguous Array</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Map 0→−1 trick (equal 0s/1s)</td></tr>
+    <tr><td>238</td><td><a href="https://leetcode.com/problems/product-of-array-except-self/">Product of Array Except Self</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fh">High</span></td><td>Prefix × suffix products — extremely common</td></tr>
+    <tr><td>304</td><td><a href="https://leetcode.com/problems/range-sum-query-2d-immutable/">Range Sum Query 2D</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fn">Niche</span></td><td>2D prefix sum (inclusion–exclusion)</td></tr>
+  </table>
+</section>
+
+<!-- ════════════════ 14 IN-PLACE LINKED LIST REVERSAL ════════════════ -->
+<section class="pat" id="p14">
+  <div class="titleblock">
+    <div class="num">14</div>
+    <div class="name"><h2>In-Place Linked List Reversal</h2><p>Re-point each node backward with three moving references — no extra memory.</p></div>
+    <div class="meta"><span>Time <b>O(n)</b> · Space <b>O(1)</b></span><span>vs array copy <b>O(n) space</b></span></div>
+  </div>
+
+  <h3 class="sec">Trigger keywords</h3>
+  <div class="triggers">
+    <span class="kw"><b>reverse</b> a linked list</span>
+    <span class="kw">reverse a <b>sublist</b> [m, n]</span>
+    <span class="kw">reverse in <b>groups of k</b></span>
+    <span class="kw"><b>O(1) space</b> required on a list</span>
+    <span class="kw">reorder / <b>swap nodes</b> by relinking</span>
+  </div>
+
+  <h3 class="sec">Visual model</h3>
+  <div class="viz">
+  <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="13">
+    <g text-anchor="middle">
+      <circle cx="120" cy="110" r="22" fill="rgba(79,214,190,.15)" stroke="#4FD6BE"/><text x="120" y="116" fill="#4FD6BE">1</text>
+      <circle cx="260" cy="110" r="22" fill="rgba(255,197,61,.2)" stroke="#FFC53D" stroke-width="2.5"/><text x="260" y="116" fill="#FFC53D">2</text>
+      <circle cx="400" cy="110" r="22" fill="rgba(255,138,122,.15)" stroke="#FF8A7A"/><text x="400" y="116" fill="#FF8A7A">3</text>
+      <circle cx="540" cy="110" r="22" fill="none" stroke="rgba(157,180,229,.45)"/><text x="540" y="116" fill="#E8EEFB">4</text>
+    </g>
+    <!-- reversed pointer 2->1 (curved up) -->
+    <path d="M 240 96 Q 190 64 138 94" stroke="#4FD6BE" stroke-width="2" fill="none" marker-end="url(#lr1)"/>
+    <text x="190" y="56" fill="#4FD6BE" font-size="11" text-anchor="middle">already reversed</text>
+    <!-- the flip happening now -->
+    <text x="120" y="170" fill="#4FD6BE" font-size="12" text-anchor="middle">prev</text>
+    <text x="260" y="170" fill="#FFC53D" font-size="12" text-anchor="middle">ptr</text>
+    <text x="400" y="170" fill="#FF8A7A" font-size="12" text-anchor="middle">next_node</text>
+    <text x="540" y="170" fill="#9DB4E5" font-size="12" text-anchor="middle">unseen</text>
+    <!-- the new link being drawn -->
+    <path d="M 282 110 H 372" stroke="rgba(157,180,229,.3)" stroke-dasharray="4 4" fill="none" marker-end="url(#lr0)"/>
+    <text x="40" y="30" fill="#9DB4E5" font-size="12">save next_node → flip ptr.next to prev → slide all three pointers forward by one</text>
+    <defs>
+      <marker id="lr0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9DB4E5"/></marker>
+      <marker id="lr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4FD6BE"/></marker>
+    </defs>
+  </svg>
+  <div class="cap">three pointers walk the list once · the only trick is saving next_node BEFORE you overwrite ptr.next</div>
+  </div>
+
+  <h3 class="sec">Reference implementation — full reverse, then groups of k</h3>
+  <pre><span class="k">def</span> <span class="f">reverse_list</span>(head):
+    <span class="c"># LC 206: the three-pointer dance — memorize this cold</span>
+    prev, ptr = <span class="k">None</span>, head
+    <span class="k">while</span> ptr:
+        next_node = ptr.next        <span class="c"># 1) SAVE the rest of the list</span>
+        ptr.next = prev             <span class="c"># 2) FLIP this node's arrow backward</span>
+        prev = ptr                  <span class="c"># 3) advance prev…</span>
+        ptr = next_node             <span class="c"># 4) …and ptr by one</span>
+    <span class="k">return</span> prev                     <span class="c"># prev is the new head</span>
+
+
+<span class="k">def</span> <span class="f">reverse_k_group</span>(head, k):
+    <span class="c"># LC 25: reverse every block of k nodes, leave a short tail as-is</span>
+    <span class="c"># 1) check there are k nodes left before touching anything</span>
+    node, count = head, <span class="n">0</span>
+    <span class="k">while</span> node <span class="k">and</span> count &lt; k:
+        node, count = node.next, count + <span class="n">1</span>
+    <span class="k">if</span> count &lt; k:
+        <span class="k">return</span> head               <span class="c"># fewer than k → leave this block alone</span>
+
+    <span class="c"># 2) reverse the first k nodes; afterwards `head` becomes the block's tail</span>
+    prev, ptr = <span class="k">None</span>, head
+    <span class="k">for</span> _ <span class="k">in</span> range(k):
+        nxt = ptr.next
+        ptr.next = prev
+        prev = ptr
+        ptr = nxt
+    <span class="c"># prev = new block head · ptr = head of the next block</span>
+    <span class="c"># 3) recurse on the remainder and stitch it onto this block's tail</span>
+    head.next = reverse_k_group(ptr, k)
+    <span class="k">return</span> prev                     <span class="c"># new head of this reversed block</span></pre>
+  <div class="note"><b>Pointer hygiene:</b> in the k-group reverse, seeding <code>prev</code> with the already-reversed remainder is what stitches the blocks together in one pass. For "reverse sublist [m,n]" (LC 92), use a dummy head and a <code>prev</code> sentinel before position m so the splice stays clean. The universal bug here is losing the rest of the list — always save <code>next</code> first.</div>
+
+  <h3 class="sec">Drill set</h3>
+  <table class="lc">
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Freq</th><th>Why it matters</th></tr>
+    <tr><td>206</td><td><a href="https://leetcode.com/problems/reverse-linked-list/">Reverse Linked List</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fh">High</span></td><td>The three-pointer base — know it cold</td></tr>
+    <tr><td>92</td><td><a href="https://leetcode.com/problems/reverse-linked-list-ii/">Reverse Linked List II</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Reverse a sublist with a dummy head</td></tr>
+    <tr><td>25</td><td><a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">Reverse Nodes in k-Group</a></td><td><span class="diff dh">Hard</span></td><td><span class="freq fm">Medium</span></td><td>Block reversal — common SDE 2/3 screen</td></tr>
+    <tr><td>24</td><td><a href="https://leetcode.com/problems/swap-nodes-in-pairs/">Swap Nodes in Pairs</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>k=2 special case, relinking practice</td></tr>
+    <tr><td>143</td><td><a href="https://leetcode.com/problems/reorder-list/">Reorder List</a></td><td><span class="diff dm">Medium</span></td><td><span class="freq fm">Medium</span></td><td>Middle + reverse second half + merge</td></tr>
+    <tr><td>234</td><td><a href="https://leetcode.com/problems/palindrome-linked-list/">Palindrome Linked List</a></td><td><span class="diff de">Easy</span></td><td><span class="freq fh">High</span></td><td>Reverse half in O(1) space to compare</td></tr>
   </table>
 </section>
 
@@ -1348,7 +1558,7 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
   <div class="titleblock">
     <div class="num">◆</div>
     <div class="name"><h2>One-Page Cheat Sheet</h2><p>Print this. Tape it to the wall. Re-derive everything else.</p></div>
-    <div class="meta"><span>coverage of typical loops</span><b>~90%</b></div>
+    <div class="meta"><span>14 patterns · coverage</span><b>~90%</b></div>
   </div>
   <div class="viz" style="padding:8px 14px 14px">
   <table class="cheat">
@@ -1365,6 +1575,8 @@ footer{padding:40px 0;color:var(--muted);font:400 12.5px var(--mono);text-align:
     <tr><td>10 Dynamic Prog.</td><td>"count ways / max-min over choices"</td><td>state + recurrence + base + order</td><td>states·trans</td></tr>
     <tr><td>11 Topological Sort</td><td>"prerequisites / build order"</td><td>Kahn's: peel in-degree-0 layer by layer</td><td>O(V+E)</td></tr>
     <tr><td>12 Union-Find</td><td>"groups merging over time / connected?"</td><td>find roots, point one at the other</td><td>≈O(1)/op</td></tr>
+    <tr><td>13 Prefix Sum</td><td>"subarray sum / count subarrays = k"</td><td>cumulative totals; range = difference</td><td>O(n) / O(1)q</td></tr>
+    <tr><td>14 List Reversal</td><td>"reverse list / in groups of k"</td><td>three pointers: save, flip, advance</td><td>O(n), O(1) sp</td></tr>
   </table>
   </div>
   <div class="note" style="margin-top:22px"><b>How to drill (SDE 2/3 cadence):</b> pick one pattern per day → read the visual until you can redraw it from memory → re-implement the template blind → solve the drill set's mediums in ≤ 25 min each, narrating triggers and complexity out loud. Revisit failed problems after 3 days, then 10. Recognition speed, not memorized solutions, is what these loops measure.</div>
